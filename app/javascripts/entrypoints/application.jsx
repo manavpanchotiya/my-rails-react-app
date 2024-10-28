@@ -25,15 +25,14 @@ console.log('Visit the guide for more information: ', 'https://vite-ruby.netlify
 // const channels = import.meta.globEager('./**/*_channel.js')
 
 // Example: Import a stylesheet in app/frontend/index.css
-// import '~/index.css'
+//import '../src/stylesheets/application.scss'
+import '~/src/stylesheets/application.scss'
 
 
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-function App() {
-  return <h1>Hello, Rails with React and Vite!</h1>
-}
+import App from '~/src/App'
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(<App />, document.getElementById('root'))

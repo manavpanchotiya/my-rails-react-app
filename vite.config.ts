@@ -7,4 +7,9 @@ export default defineConfig({
     RubyPlugin(),
     react(),
   ],
+  build: {
+    rollupOptions: {
+      external: [],
+    },
+  },
 })
