@@ -2,13 +2,9 @@ module.exports = {
     darkMode: ["class"],
     important: true,
   content: [
-    "./app/javascripts/**/*.js",
-    "./app/javascripts/**/**/*.js",
-    "./app/javascripts/**/**/**/*.js",
-    "./app/javascripts/**/*.jsx",
-    "./app/javascripts/**/**/*.jsx",
-    "./app/javascripts/**/**/**/*.jsx",
-    "./node_modules/@bigbinary/neetoui/**/*",
+  "app/javascripts/**/*.{ts,tsx}",
+  "app/javascripts/components/**/*.{ts,tsx,js,jsx}",
+  "app/**/**/*.{html,html.erb}"
   ],
     plugins: [require("tailwindcss-animate")],
     theme: {

@@ -25,5 +25,10 @@
     "useDefineForClassFields": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
   },
-    "include": ["app/javascripts  ", "jest.setup.ts", "vite.config.ts"],
+  "include": ["app/javascripts  ", "jest.setup.ts", "vite.config.ts", "postcss.config.ts"],
+  "exclude": [
+    "**/dist",
+    "**/node_modules",
+    "**/test"
+  ]
 }
