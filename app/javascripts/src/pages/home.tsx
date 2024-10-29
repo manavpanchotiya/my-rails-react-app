@@ -18,23 +18,24 @@ import { Team } from "@/components/Team";
 import { Testimonials } from "@/components/Testimonials";
 
 const Home = props => (
-    <>
-    <Navbar />
-    <Hero />
-    <Sponsors />
-    <About />
-    <HowItWorks />
-    <Features />
-    <Services />
-    <Cta />
-    <Testimonials />
-    <Team />
-    <Pricing />
-    <Newsletter />
-    <FAQ />
-    <Footer />
-    <ScrollToTop />
+ <>
+      <Navbar />
+      <Hero />
+      <Sponsors />
+      <About />
+      <HowItWorks />
+      <Features />
+      <Services />
+      <Cta />
+      <Testimonials />
+      <Team />
+      <Pricing />
+      <Newsletter />
+      <FAQ />
+      <Footer />
+      <ScrollToTop />
     </>
+
 );
 
 export default Home;
