@@ -11,7 +11,9 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import { Button } from "@/components/ui/button"
 
+import { Link } from 'react-router-dom'
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import { buttonVariants } from "./ui/button";
 import { Menu } from "lucide-react";
@@ -55,7 +57,7 @@ export const Navbar = () => {
               className="ml-2 font-bold text-xl flex"
             >
               <LogoIcon />
-              ShadcnUI/React
+              Rails-Vite Wheel
             </a>
           </NavigationMenuItem>
 
@@ -127,6 +129,12 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex gap-2">
+            <Button variant="outline" asChild>
+              <Link to="/login">Log In</Link>
+            </Button>
+            <Button asChild>
+              <Link to="/signup">Get Started</Link>
+            </Button>
             <a
               rel="noreferrer noopener"
               href="https://github.com/leoMirandaa/shadcn-landing-page.git"

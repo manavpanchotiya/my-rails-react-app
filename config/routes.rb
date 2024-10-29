@@ -9,4 +9,8 @@ Rails.application.routes.draw do
   root 'pages#index'
   # Defines the root path route ("/")
   # root "posts#index"
+
+  get '*path', to: 'pages#index', constraints: lambda { |req|
+    req.path !~ %r{^/rails/active_storage}
+  }, defaults: { format: :html }
 end
