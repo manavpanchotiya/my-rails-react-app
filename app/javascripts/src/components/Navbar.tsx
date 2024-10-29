@@ -130,7 +130,7 @@ export const Navbar = () => {
 
           <div className="hidden md:flex gap-2">
             <Button variant="outline" asChild>
-              <Link to="/login">Log In</Link>
+              <Link to="/signin">Log In</Link>
             </Button>
             <Button asChild>
               <Link to="/signup">Get Started</Link>

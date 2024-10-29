@@ -13,8 +13,9 @@ const App = props => (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Page />} />
+        <Route path="/signin" element={<Page />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   </ThemeProvider>

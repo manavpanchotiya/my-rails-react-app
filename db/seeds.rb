@@ -1,11 +1,24 @@
 # frozen_string_literal: true
 
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+User.create!(email: 'thermic.arish@gmail.com', password: 'thermic.arish@gmail.com',
+             password_confirmation: 'thermic.arish@gmail.com')
+
+# Create Roles
+%w[Admin SuperAdmin Guest User].each do |name|
+  Role.create(name:)
+end
+
+# Create Permissions
+
+# First, ensure all models are loaded
+Rails.application.eager_load!
+
+# Fetch all model names
+model_names = ActiveRecord::Base.descendants.map(&:name)
+
+# Iterate through each model and create permissions for view and edit actions
+model_names.each do |name|
+  Role.all.each do |role|
+    RolePermission.create(role:, resource: name, action: :view)
+  end
+end
