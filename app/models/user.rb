@@ -19,6 +19,19 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :profile, allow_destroy: true
   accepts_nested_attributes_for :user_roles, allow_destroy: true
 
+  attr_accessor :otp_code
+
+  def generate_otp!
+    self.otp_code = rand(100_000..999_999).to_s # Generate a 6-digit OTP
+    update!(otp_code: otp_code, otp_generated_at: Time.current)
+    # Send OTP via email, SMS, or any method you choose
+    # UserMailer.with(user: self, otp_code: otp_code).send_otp.deliver_now
+  end
+
+  def otp_expired?
+    otp_generated_at < 10.minutes.ago
+  end
+
   # Get all role permissions based on user roles
   def role_permissions
     RolePermission.joins(:role).where(role: roles).distinct

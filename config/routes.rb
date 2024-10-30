@@ -12,6 +12,7 @@ Rails.application.routes.draw do
                        passwords: 'users/passwords'
                      }
   devise_scope :user do
+    post 'verify_otp', to: 'users/sessions#verify_otp'
     post 'change_password', to: 'users/registrations#change_password'
   end
   namespace :api do
@@ -47,7 +48,7 @@ Rails.application.routes.draw do
   #   req.path !~ %r{^/rails/active_storage}
   # }, defaults: { format: :html }
 
-  get '*path', to: "pages#index", constraints: ->(request) do
+  get '*path', to: 'pages#index', constraints: lambda { |request|
     !request.xhr? && request.format.html?
-  end
+  }
 end

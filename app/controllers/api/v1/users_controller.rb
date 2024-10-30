@@ -21,6 +21,10 @@ module Api
                status: :ok
       end
 
+      def create
+        debugger
+      end
+
       def fetch
         @users = User.includes(:roles, :profile, :user_roles).all
 

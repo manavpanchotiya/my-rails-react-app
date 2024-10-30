@@ -13,6 +13,8 @@ class AddDeviseToUsers < ActiveRecord::Migration[7.0]
 
       ## Rememberable
       t.datetime :remember_created_at
+      t.datetime :otp_generated_at
+      t.string :otp_code
 
       ## Trackable
       # t.integer  :sign_in_count, default: 0, null: false

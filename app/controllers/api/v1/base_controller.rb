@@ -4,7 +4,7 @@ module Api
   module V1
     class BaseController < ApplicationController
       include ApiResponders
-      include Pundit
+      include Pundit::Authorization
       rescue_from ActiveRecord::RecordNotFound,        with: :render_not_found
       rescue_from ActiveRecord::RecordInvalid,         with: :render_record_invalid
       rescue_from ActionController::ParameterMissing,  with: :render_parameter_missing

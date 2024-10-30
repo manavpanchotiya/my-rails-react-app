@@ -198,6 +198,8 @@ GEM
       activesupport (>= 3.0.0)
     racc (1.8.1)
     rack (3.1.8)
+    rack-cors (2.0.2)
+      rack (>= 2.0.0)
     rack-proxy (0.7.7)
       rack
     rack-session (2.0.0)
@@ -334,6 +336,7 @@ DEPENDENCIES
   pg (~> 1.1)
   puma (>= 5.0)
   pundit
+  rack-cors
   rails (~> 7.1.4, >= 7.1.4.2)
   rubocop-rails (~> 2.27)
   sidekiq (~> 7.2)
