@@ -62,7 +62,7 @@ export const userLogin = createAsyncThunk<AuthResponse, LoginPayload>(
 // Login action
 export const verifyOTP = createAsyncThunk<AuthResponse, LoginPayload>(
   "auth/verifyOTP",
-  async ({ otp }, { rejectWithValue }) => {
+  async ({ otp_code, email }, { rejectWithValue }) => {
     try {
       const config = {
         headers: {
@@ -74,22 +74,22 @@ export const verifyOTP = createAsyncThunk<AuthResponse, LoginPayload>(
 
       const response = await axios.post(
         `/verify_otp`,
-        { user: { otp } },
+        { user: { otp_code, email } },
         config
       );
 
       // console.log(response.headers)
-      // const authToken = response.headers["authorization"]; // Fixed the method to access headers
+      const authToken = response.headers["authorization"]; // Fixed the method to access headers
 
       // // Store user's token in local storage
-      // if (authToken) {
-      //   localStorage.setItem("userToken", authToken);
-      // }
-
-      // return {
-      //   data: response.data,
-      //   userToken: authToken,
-      // };
+      if (authToken) {
+        localStorage.setItem("userToken", authToken);
+      }
+      return {
+        data: response.data.data,
+        userToken: authToken,
+        isLoggedIn: response.data.isLoggedIn,
+      };
 
       return {
         data: response.data

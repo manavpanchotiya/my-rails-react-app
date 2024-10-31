@@ -2,9 +2,11 @@
 
 class User < ApplicationRecord
   include Devise::JWT::RevocationStrategies::JTIMatcher
-  devise :database_authenticatable, :registerable, :recoverable,
-         :rememberable, :validatable,
-         :jwt_authenticatable, jwt_revocation_strategy: self
+  devise :two_factor_authenticatable
+  devise :registerable, :two_factor_authenticatable,
+         :jwt_authenticatable,
+         jwt_revocation_strategy: self,
+         :otp_secret_encryption_key => ENV['OTP_SECRET_KEY']
 
   # Associations
   has_one :profile, dependent: :destroy
@@ -19,20 +21,30 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :profile, allow_destroy: true
   accepts_nested_attributes_for :user_roles, allow_destroy: true
 
-  attr_accessor :otp_code
+#  attr_accessor :otp_code
 
-  def generate_otp!
-    self.otp_code = rand(100_000..999_999).to_s # Generate a 6-digit OTP
-    update!(otp_code: otp_code, otp_generated_at: Time.current)
-    # Send OTP via email, SMS, or any method you choose
-    # UserMailer.with(user: self, otp_code: otp_code).send_otp.deliver_now
+  # Set OTP requirement only for login
+  before_create :generate_otp_secret
+
+  # Automatically send OTP when the user is created or logs in
+  def send_two_factor_authentication_code
+    # Send OTP via email, SMS, etc.
+    # Example for email:
+    #UserMailer.otp_code(self).deliver_now
   end
 
-  def otp_expired?
-    otp_generated_at < 10.minutes.ago
-  end
+  # def generate_otp!
+  #   self.otp_code = rand(100_000..999_999).to_s # Generate a 6-digit OTP
+  #   update!(otp_code: otp_code, otp_generated_at: Time.current)
+  #   # Send OTP via email, SMS, or any method you choose
+  #   # UserMailer.with(user: self, otp_code: otp_code).send_otp.deliver_now
+  # end
 
-  # Get all role permissions based on user roles
+  # def otp_expired?
+  #   otp_generated_at < 10.minutes.ago
+  # end
+
+  # # Get all role permissions based on user roles
   def role_permissions
     RolePermission.joins(:role).where(role: roles).distinct
   end
@@ -47,5 +59,12 @@ class User < ApplicationRecord
 
   def assign_default_role(role_name: 'User')
     user_roles.create(role: Role.find_by(name: role_name)) # Assign 'User' role after user creation
+  end
+
+  private
+
+  def generate_otp_secret
+    self.otp_secret = User.generate_otp_secret
+    self.otp_required_for_login = true
   end
 end

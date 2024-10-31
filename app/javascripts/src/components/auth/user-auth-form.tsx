@@ -10,6 +10,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 import {
   Form,
@@ -25,7 +26,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { userLogin } from "@/features/auth/authActions";
+import { userLogin, verifyOTP } from "@/features/auth/authActions";
 import { useDispatch, useSelector } from "react-redux";
 import {
   InputOTP,
@@ -39,10 +40,15 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState(false);
   const [showOtpForm, setShowOtpForm] = React.useState(false);
-  const [otp, setOtp] = React.useState("");
+  const [otp_code, setOtpCode] = React.useState("");
   const [showNotification, setShowNotification] = React.useState(false);
   const [isResendDisabled, setIsResendDisabled] = React.useState(true);
   const [timer, setTimer] = React.useState(30);
+
+  const navigate = useNavigate();
+
+  const { email, isLoggedIn } = useSelector((state: any) => state.auth);
+  const resoi = useSelector((state: any) => console.log(state.auth));
 
   const dispatch = useDispatch();
 
@@ -56,7 +62,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   });
 
   const otpForm = useForm({
-    defaultValues: { otp: "" },
+    defaultValues: { otp_code: "" },
   });
 
   const onSubmitEmail: SubmitHandler<any> = async (values) => {
@@ -76,15 +82,22 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
   };
 
-  const onSubmitOtp: SubmitHandler<any> = (values) => {
+  const onSubmitOtp: SubmitHandler<any> = async (values) => {
     console.log("OTP Submitted:", values);
 
+    const data = {
+      ...values,
+      email,
+    };
+
+    const result = await dispatch(verifyOTP(data));
 
   };
 
+
   const handleBack = () => setShowOtpForm(false);
 
-  const handleOtpChange = (value: string) => setOtp(value);
+  const handleOtpChange = (value: string) => setOtpCode(value);
 
   const startOtpTimer = () => {
     const interval = setInterval(() => {
@@ -110,6 +123,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     visible: { x: 0, opacity: 1 },
     exit: { x: "100%", opacity: 0 },
   };
+
 
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -148,7 +162,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                       className="justify-center"
                       onChange={(value) => {
                         handleOtpChange(value);
-                        otpForm.setValue("otp", value); // update form value
+                        otpForm.setValue("otp_code", value); // update form value
                       }}
                     >
                       <InputOTPGroup>
@@ -167,7 +181,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <Button
                     type="submit"
                     className="w-full"
-                    disabled={otp.length < 6 || isLoading}
+                    disabled={otp_code.length < 6 || isLoading}
                   >
                     {isLoading ? (
                       <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />

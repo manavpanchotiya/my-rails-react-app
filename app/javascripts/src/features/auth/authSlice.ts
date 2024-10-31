@@ -4,6 +4,7 @@ import {
   userLogin,
   userLogout,
   destroyUser,
+  verifyOTP
 } from "./authActions";
 
 // Define the user information type
@@ -45,6 +46,7 @@ const authSlice = createSlice({
       state.isLoggedIn = false; // Change from null to false
       state.userInfo = null;
       state.userToken = null;
+      state.email = null;
       state.error = null;
     },
     setCredentials: (
@@ -67,14 +69,35 @@ const authSlice = createSlice({
     },
     [userLogin.fulfilled.type]: (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
       state.loading = false;
-      state.userInfo = payload.data;
-      state.isLoggedIn = true; // Set to true if login is successful
+      //state.userInfo = payload.data;
+      state.email = payload.data.email;
+      //state.isLoggedIn = false; // Set to true if login is successful
       //state.userToken = payload.userToken;
     },
     [userLogin.rejected.type]: (state, { payload }: PayloadAction<string | null>) => {
       state.loading = false;
+      state.isLoggedIn = false;
       state.error = payload || "Login failed"; // Provide a default message
     },
+
+    [verifyOTP.pending.type]: (state) => {
+      state.loading = true;
+      state.isLoggedIn = false;
+      state.error = null;
+    },
+    [verifyOTP.fulfilled.type]: (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
+      state.loading = false;
+      state.userInfo = payload.data;
+      state.email = payload.data.email;
+      state.isLoggedIn = payload.isLoggedIn;
+      state.userToken = payload.userToken;
+    },
+    [verifyOTP.rejected.type]: (state, { payload }: PayloadAction<string | null>) => {
+      state.loading = false;
+      state.isLoggedIn = false;
+      state.error = payload || "Login failed"; // Provide a default message
+    },
+
 
     // Logout user
     [userLogout.pending.type]: (state) => {

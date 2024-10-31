@@ -3,6 +3,8 @@
 class ApplicationController < ActionController::Base
   include RackSessionFix
   before_action :refresh_jwt_if_needed
+  before_action :configure_permitted_parameters, if: :devise_controller?
+
   def self.session_store
     :disabled
   end
@@ -32,5 +34,12 @@ class ApplicationController < ActionController::Base
     end
   rescue JWT::DecodeError
     # Handle token decode errors if needed
+  end
+
+
+  protected
+
+  def configure_permitted_parameters
+    devise_parameter_sanitizer.permit(:sign_in, keys: [:otp_attempt])
   end
 end
