@@ -91,9 +91,6 @@ export const verifyOTP = createAsyncThunk<AuthResponse, LoginPayload>(
         isLoggedIn: response.data.isLoggedIn,
       };
 
-      return {
-        data: response.data
-      };
     } catch (error: any) {
       // Return custom error message from API if any
       if (error.response && error.response.data) {

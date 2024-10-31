@@ -2,6 +2,7 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    protect_from_forgery unless: -> { request.format.json? }
     respond_to :json
 
     # This method will handle user email updates

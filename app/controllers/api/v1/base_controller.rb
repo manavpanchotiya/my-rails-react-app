@@ -3,6 +3,7 @@
 module Api
   module V1
     class BaseController < ApplicationController
+      protect_from_forgery unless: -> { request.format.json? }
       include ApiResponders
       include Pundit::Authorization
       rescue_from ActiveRecord::RecordNotFound,        with: :render_not_found

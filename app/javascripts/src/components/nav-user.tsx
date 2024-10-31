@@ -32,7 +32,7 @@ import {
 
 import { userLogout } from "@/features/auth/authActions";
 import { useDispatch, useSelector } from 'react-redux'
-
+import { Link } from "react-router-dom";
 export function NavUser({
   user,
 }: {
@@ -95,9 +95,11 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheck />
-                Account
+              <DropdownMenuItem asChild>
+                <Link to="/settings/profile">
+                  <BadgeCheck />
+                  Account
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <CreditCard />
