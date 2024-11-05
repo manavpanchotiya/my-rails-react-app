@@ -5,6 +5,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import { createColumns } from "@/components/data-table/column-def"
 import { RoleSheet } from "./role-sheet"
 import { toast } from "sonner";
+import { Loader } from "@/components/common/loader"
 
 type Role = {
   id: string;
@@ -109,7 +110,7 @@ export default function Roles() {
   return (
     <div className="container mx-auto py-10">
       {loading ? (
-        <p>Loading...</p>
+        <Loader/>
       ) : error ? (
         <p>{error}</p>
       ) : (

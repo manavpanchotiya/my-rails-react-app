@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { Loader } from "@/components/common/loader"
 
 const RolesList = () => {
   const [roles, setRoles] = useState([]);
@@ -44,7 +45,7 @@ const RolesList = () => {
   };
 
   if (loading) {
-    return <div>Loading roles and permissions...</div>;
+    return <Loader/>;
   }
 
   return (

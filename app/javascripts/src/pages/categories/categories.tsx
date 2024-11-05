@@ -5,6 +5,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import { createColumns } from "@/components/data-table/column-def"
 import { CategorySheet } from "./category-sheet"
 import { toast } from "sonner";
+import { Loader } from "@/components/common/loader"
 // Define the Category type
 type Category = {
   id: string;
@@ -122,7 +123,7 @@ export default function Categories() {
   return (
     <div className="container mx-auto py-10">
       {loading ? (
-        <p>Loading...</p>
+        <Loader/>
       ) : error ? (
         <p>{error}</p>
       ) : (
