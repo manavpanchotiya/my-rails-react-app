@@ -20,6 +20,11 @@ Rails.application.routes.draw do
       resources :users, only: %i[index create update] do
         get :fetch, on: :collection
       end
+      resources :notifications do
+        collection do
+          patch :mark_all_as_read
+        end
+      end
       resources :profiles do
         member do
           post :upload_image

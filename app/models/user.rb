@@ -14,6 +14,7 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :role_permissions, through: :roles
+  has_many :notifications
   # Callback to assign default role after user creation
   after_create :assign_default_role
 

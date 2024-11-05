@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Provider } from "react-redux";
 import store from "@/app/store";
 import { ThemeProvider } from "@/lib/theme-provider";
@@ -16,6 +16,8 @@ import Roles from "@/pages/user-management/roles";
 import Users from "@/pages/user-management/users";
 import RolePermissions from "@/pages/user-management/role_permissions";
 
+import { Notifications } from "@/pages/notification/index";
+
 import Dashboard from "@/pages/dashboard/index";
 
 import { BrowserRouter } from "react-router-dom";
@@ -24,7 +26,15 @@ import Account from "@/pages/settings/account/page";
 import Profile from "@/pages/settings/profile/page";
 import Categories from "@/pages/categories/page";
 import { Toaster } from 'sonner'
-const App = (props) => (
+
+import useNotificationsChannel from '@/hooks/use-notification-channel';
+
+const App = (props) => {
+const [messages, setMessages] = useState<string[]>([]);
+useNotificationsChannel((data) => {
+    setMessages((prevMessages) => [...prevMessages, data.message]);
+});
+return (
   <ThemeProvider>
     <Provider store={store}>
       <BrowserRouter>
@@ -37,6 +47,8 @@ const App = (props) => (
 
           <Route path="/" element={<PrivateLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="notification" element={<Notifications />} />
+
             <Route path="categories" element={<Categories />} />
             <Route path="/user-management" element={<UserManagementLayout />}>
               <Route path="roles" element={<Roles />} />
@@ -56,8 +68,7 @@ const App = (props) => (
     </Provider>
     <Toaster richColors/>
   </ThemeProvider>
-
-
-);
+)
+}
 
 export default App;

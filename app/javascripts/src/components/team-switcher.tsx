@@ -39,7 +39,7 @@ const formatName = (user) => {
   const profile = user.profile;
   if (profile && profile.first_name && profile.last_name) {
     // Concatenate first letters of first and last name
-    return `${profile.first_name}${profile.last_name}`.toUpperCase();
+    return `${profile.first_name[0]}${profile.last_name[0]}`.toUpperCase();
   } else {
     // Fallback to first two letters of email if profile or names are missing
     return user.email;
