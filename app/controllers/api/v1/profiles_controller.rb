@@ -26,7 +26,7 @@ module Api
       # New action for uploading the profile image
       def upload_image
         @profile.image.attach(params[:image])
-        if @profile.save!
+        if @profile.save(validate: false)
           render_message(I18n.t('successfully_updated', entity: 'Profile Image'))
         else
           render_error(@profile.errors.full_messages.join(', '), :unprocessable_entity)

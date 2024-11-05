@@ -5,7 +5,7 @@ module Api
     # api/v1/roles_controller.rb
     class RolesController < BaseController
       before_action :authenticate_user!
-      before_action :set_role, only: %i[update destroy]
+      before_action :set_role, only: %i[update]
       before_action :load_data, only: :bulk_destroy
 
       def index

@@ -16,8 +16,16 @@ Rails.application.eager_load!
 # Fetch all model names
 model_names = ActiveRecord::Base.descendants.map(&:name)
 
+MODEL_NAME=%w[
+User
+Profile
+Category
+Role
+RolePermission
+UserRole
+].freeze
 # Iterate through each model and create permissions for view and edit actions
-model_names.each do |name|
+MODEL_NAME.each do |name|
   Role.all.each do |role|
     RolePermission.create(role:, resource: name, action: :view)
   end

@@ -24,12 +24,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+import {ImageUploader} from "@/components/image-uploader"
+
 import { Icons } from "@/components/icons";
-import { fetch, create } from '@/apis/profilesApi';
+import { fetch, create, upload } from '@/apis/profilesApi';
 
 export function ProfileForm() {
   const [isProcessing, setIsProcessing] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState({});
   const [profile, setProfile] = useState(null);
   const [genders, setGenders] = useState({});
   const profileFormSchema = z.object({
@@ -58,13 +60,20 @@ export function ProfileForm() {
     fetchProfile();
   }, []);
 
+  // useEffect(() => {
+  //   if (profile) {
+  //     console.log("Profile state updated:", profile);
+  //   }
+  // }, [profile]);
+
   const fetchProfile = async () => {
     setLoading(true);
     try {
       const response = await fetch();
       const responseProfile = response.data.profile
-      setProfile(response.data.profile);
+      setProfile(responseProfile);
       setGenders(response.data.genders);
+      console.log(profile)
       // Update form values after profile is fetched
       form.reset({
         first_name: responseProfile?.first_name ?? "",
@@ -99,93 +108,103 @@ export function ProfileForm() {
       {loading ? (
         <p>Loading...</p>
       ) : (
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="first_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>First Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="First Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="middle_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Middle Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Middle Name (optional)" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <>
+          <ImageUploader
+            labelText="Upload Profile Picture"
+            submitButtonText="Save Picture"
+            acceptedFormats={{ "image/png": [], "image/jpeg": [] }}
+            maxSize={2000000}
+            data={profile}
+            api={upload}
+          />
 
-            <FormField
-              control={form.control}
-              name="last_name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Last Name</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Last Name" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="bio"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Bio</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Tell us a little bit about yourself"
-                      className="resize-none"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="gender"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Gender</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <FormField
+                control={form.control}
+                name="first_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="-----Select-----" />
-                      </SelectTrigger>
+                      <Input placeholder="First Name" {...field} />
                     </FormControl>
-                    <SelectContent>
-                       {Object.entries(genders).map(([key, value]) => (
-                        <SelectItem key={key} value={String(key)}>
-                          {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="middle_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Middle Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Middle Name (optional)" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <Button disabled={isProcessing}>
+              <FormField
+                control={form.control}
+                name="last_name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Last Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="bio"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Bio</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Tell us a little bit about yourself"
+                        className="resize-none"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="gender"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Gender</FormLabel>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                      <FormControl>
+                        <SelectTrigger>
+                          <SelectValue placeholder="-----Select-----" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {Object.entries(genders).map(([key, value]) => (
+                          <SelectItem key={key} value={String(key)}>
+                            {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button disabled={isProcessing}>
                 {isProcessing && (
                   <Icons.spinner
                     className="mr-2 size-4 animate-spin"
@@ -194,8 +213,9 @@ export function ProfileForm() {
                 )}
                 Update Profile
               </Button>
-          </form>
-        </Form>
+            </form>
+          </Form>
+        </>
       )}
     </>
   );

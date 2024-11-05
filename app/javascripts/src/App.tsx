@@ -11,6 +11,10 @@ import { Page } from "@/components/auth/page";
 import PublicLayout from "@/layouts/public-layout";
 import PrivateLayout from "@/layouts/private-layout";
 import SettingsLayout from "@/pages/settings/layout";
+import UserManagementLayout from "@/pages/user-management";
+import Roles from "@/pages/user-management/roles";
+import Users from "@/pages/user-management/users";
+import RolePermissions from "@/pages/user-management/role_permissions";
 
 import Dashboard from "@/pages/dashboard/index";
 
@@ -18,6 +22,7 @@ import { BrowserRouter } from "react-router-dom";
 import { Navigate, Route, Routes } from "react-router";
 import Account from "@/pages/settings/account/page";
 import Profile from "@/pages/settings/profile/page";
+import Categories from "@/pages/categories/page";
 import { Toaster } from 'sonner'
 const App = (props) => (
   <ThemeProvider>
@@ -32,6 +37,12 @@ const App = (props) => (
 
           <Route path="/" element={<PrivateLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="categories" element={<Categories />} />
+            <Route path="/user-management" element={<UserManagementLayout />}>
+              <Route path="roles" element={<Roles />} />
+              <Route path="users" element={<Users />} />
+              <Route path="role-permissions" element={<RolePermissions />} />
+            </Route>
             <Route path="settings" element={<SettingsLayout />}>
               <Route path="account" element={<Account />} />
               <Route path="profile" element={<Profile />} />

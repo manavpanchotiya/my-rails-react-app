@@ -3,7 +3,7 @@
 module Api
   module V1
     class RolePermissionsController < BaseController
-      before_action :set_role_permission, only: %i[show destroy]
+      #before_action :set_role_permission
 
       def index
         roles = Role.includes(:role_permissions).all
