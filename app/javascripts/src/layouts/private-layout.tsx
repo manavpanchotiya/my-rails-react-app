@@ -16,12 +16,13 @@ import {
 } from "@/components/ui/sidebar"
 
 import { LoadingSpinner } from '@/components/Icons'
-
+import { Bell } from "lucide-react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, setCredentials } from '@/features/auth/authSlice'
 import { useLocation, matchRoutes, Link } from "react-router-dom";
 import { ModeToggle } from "@/components/mode-toggle";
+import { Notification } from "@/components/notification";
 import { useGetUserDetailsQuery } from '@/app/services/auth/authService'
 export const iframeHeight = "800px"
 
@@ -113,7 +114,9 @@ export default function PrivateLayout() {
           </div>
           {/* Right side icons */}
           <div className="ml-auto flex items-center gap-4">
+            <Notification />
             <ModeToggle /> {/* Theme selector */}
+
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">

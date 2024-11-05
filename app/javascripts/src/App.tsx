@@ -16,6 +16,8 @@ import Roles from "@/pages/user-management/roles";
 import Users from "@/pages/user-management/users";
 import RolePermissions from "@/pages/user-management/role_permissions";
 
+import { Notifications } from "@/pages/notification/index";
+
 import Dashboard from "@/pages/dashboard/index";
 
 import { BrowserRouter } from "react-router-dom";
@@ -45,6 +47,8 @@ return (
 
           <Route path="/" element={<PrivateLayout />}>
             <Route path="dashboard" element={<Dashboard />} />
+            <Route path="notification" element={<Notifications />} />
+
             <Route path="categories" element={<Categories />} />
             <Route path="/user-management" element={<UserManagementLayout />}>
               <Route path="roles" element={<Roles />} />

@@ -22,7 +22,6 @@ module Api
       end
 
       def create
-        debugger
       end
 
       def fetch
