@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Provider } from "react-redux";
 import store from "@/app/store";
 import { ThemeProvider } from "@/lib/theme-provider";
@@ -24,7 +24,15 @@ import Account from "@/pages/settings/account/page";
 import Profile from "@/pages/settings/profile/page";
 import Categories from "@/pages/categories/page";
 import { Toaster } from 'sonner'
-const App = (props) => (
+
+import useNotificationsChannel from '@/hooks/use-notification-channel';
+
+const App = (props) => {
+const [messages, setMessages] = useState<string[]>([]);
+useNotificationsChannel((data) => {
+    setMessages((prevMessages) => [...prevMessages, data.message]);
+});
+return (
   <ThemeProvider>
     <Provider store={store}>
       <BrowserRouter>
@@ -56,8 +64,7 @@ const App = (props) => (
     </Provider>
     <Toaster richColors/>
   </ThemeProvider>
-
-
-);
+)
+}
 
 export default App;

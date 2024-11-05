@@ -27,6 +27,7 @@
     "@tanstack/react-table": "^8.20.5",
     "@types/node": "^22.8.1",
     "@vitejs/plugin-react": "^4.3.3",
+    "@rails/actioncable": "^7.2.100",
     "autoprefixer": "^10.4.20",
     "axios": "^1.6.7",
     "class-variance-authority": "^0.7.0",
