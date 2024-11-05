@@ -30,16 +30,18 @@ import '~/src/stylesheets/application.scss'
 
 
 import React from 'react'
-// Import the createRoot method
-import { createRoot } from 'react-dom/client';
-
+import ReactDOM from "react-dom/client";
 import App from '~/src/App'
 
-// Find the root element in your HTML file (ensure this ID matches your HTML)
-const container = document.getElementById('root');
 
-// Create a root and render the App component
-if (container) {
-  const root = createRoot(container);
-  root.render(<App />);
-}
+import "./index.css";
+
+
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+
+      <App />
+
+
+  </React.StrictMode>
+);

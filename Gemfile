@@ -19,6 +19,12 @@ gem 'puma', '>= 5.0'
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem 'jbuilder'
 
+gem 'devise'
+gem 'devise-jwt'
+gem 'dotenv', groups: %i[development test]
+gem 'image_processing'
+gem 'pundit'
+gem 'devise-two-factor'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
@@ -52,7 +58,10 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
-
+gem 'rack-cors'
 gem 'vite_rails', '~> 3.0'
 
+gem 'jwt'
+gem 'letter_opener'
 gem 'rubocop-rails', '~> 2.27'
+gem 'sidekiq', '~> 7.2'

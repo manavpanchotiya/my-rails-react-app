@@ -18,6 +18,7 @@ Rails.application.configure do
 
   # Enable server timing
   config.server_timing = true
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
 
   # Enable/disable caching. By default caching is disabled.
   # Run rails dev:cache to toggle caching.
@@ -35,6 +36,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.action_controller.default_url_options = { host: 'localhost', port: 3000 }
+  Rails.application.routes.default_url_options[:host] = 'localhost:3000'
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
