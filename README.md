@@ -1,24 +1,25 @@
-# README
+# Rails Vite Wheel
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This project is a starter template built with Rails 7, Vite, React 18, and ShadCN UI, providing a robust foundation for modern Rails applications with React frontend integration.
 
-Things you may want to cover:
+## Project Overview
 
-* Ruby version
+### Stack:
+- **Rails**: Version 7
+- **Vite-Rails**: [Vite-Rails GitHub Repo](https://github.com/ElMassimo/vite_rails)
+- **React**: Version 18
+- **ShadCN UI**: For UI components and styling
 
-* System dependencies
+### Key Modules:
+- **Authentication**: Secure authentication with Devise and two-factor authentication
+- **CRUD with Datatable**: Easy-to-use CRUD operations with data table integration
+- **Roles and Permissions**: Fine-grained control over user permissions and roles
 
-* Configuration
+---
 
-* Database creation
+## Prerequisites
 
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Make sure you have the following installed:
+- **Ruby**: Version specified in the `.ruby-version` file
+- **Node.js**: Required for Vite and React setup
+- **PostgreSQL**: (or other specified database)
