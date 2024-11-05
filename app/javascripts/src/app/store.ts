@@ -8,7 +8,6 @@ export type RootState = ReturnType<typeof store.getState>;
 
 // Define the type of the dispatch function
 export type AppDispatch = typeof store.dispatch;
-
 // Create the store
 const store = configureStore({
   reducer: {

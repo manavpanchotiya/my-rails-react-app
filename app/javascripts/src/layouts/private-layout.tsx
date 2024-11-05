@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect } from "react";
 import { AppSidebar } from "@/components/app-sidebar"
 import {
   Breadcrumb,
@@ -15,10 +15,14 @@ import {
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 
+import { LoadingSpinner } from '@/components/Icons'
+
 import { Navigate, Outlet } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux'
+import { logout, setCredentials } from '@/features/auth/authSlice'
 import { useLocation, matchRoutes, Link } from "react-router-dom";
 import { ModeToggle } from "@/components/mode-toggle";
+import { useGetUserDetailsQuery } from '@/app/services/auth/authService'
 export const iframeHeight = "800px"
 
 
@@ -31,9 +35,6 @@ const routes = [
   { path: "/settings/profile", breadcrumb: "Profile" },
   // Add other routes as necessary
 ];
-
-
-
 
 function generateBreadcrumbs(location) {
   const matchedRoutes = matchRoutes(routes, location);
@@ -60,18 +61,47 @@ function generateBreadcrumbs(location) {
 
 
 export default function PrivateLayout() {
+  const { loading, isLoggedIn, userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch()
+  const { data, isFetching, error } = useGetUserDetailsQuery('userDetails', {
+    pollingInterval: 900000, // 15mins
+  })
 
-  const { isLoggedIn } = useSelector((state) => state.auth);
+
+
+  useEffect(() => {
+    if (data){
+        dispatch(setCredentials(data))
+    }else if (error && !loading) {
+      if (error.originalStatus === 401) {
+         dispatch(logout());
+      }
+    }
+  }, [data, error, dispatch, isFetching]);
+
   if (!isLoggedIn) {
     return <Navigate to="/sigin" replace />;
   }
+
+
   const location = useLocation();
   const breadcrumbs = generateBreadcrumbs(location);
 
 
   return (
     <SidebarProvider>
-      <AppSidebar />
+    {!userInfo ? (
+      <>
+     <div className="flex h-screen w-full items-center justify-center">
+      <div className="flex flex-col items-center space-y-4">
+        <div className="animate-spin rounded-full border-4 border-gray-300 border-t-gray-900 h-12 w-12" />
+        <p className="text-gray-500 dark:text-gray-400">Loading...</p>
+      </div>
+    </div>
+      </>
+    ) : (
+    <>
+    <AppSidebar user={userInfo} />
       <SidebarInset>
          <header className="flex h-16 shrink-0 items-center gap-2 px-4 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
           <div className="flex items-center gap-2">
@@ -91,7 +121,7 @@ export default function PrivateLayout() {
             <Outlet/>
           </div>
         </div>
-      </SidebarInset>
+      </SidebarInset></>)}
     </SidebarProvider>
   )
 }

@@ -44,10 +44,21 @@ export function NavUser({
 }) {
   const { isMobile } = useSidebar()
   const dispatch = useDispatch()
-
   const handleLogout = () =>{
     dispatch(userLogout());
   }
+  const { profile } = user;
+
+  const formatName = (user) => {
+  const profile = user.profile;
+  if (profile && profile.first_name && profile.last_name) {
+    // Concatenate first letters of first and last name
+    return `${profile.first_name[0]}${profile.last_name[0]}`.toUpperCase();
+  } else {
+    // Fallback to first two letters of email if profile or names are missing
+    return user.email.slice(0, 2).toUpperCase();
+  }
+};
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -58,12 +69,12 @@ export function NavUser({
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarImage src={user?.avatar} alt={profile?.first_name} />
+                <AvatarFallback className="rounded-lg">{formatName(user)}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-semibold">{user?.name}</span>
+                <span className="truncate text-xs">{user?.email}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4" />
             </SidebarMenuButton>
@@ -77,12 +88,12 @@ export function NavUser({
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
+                  <AvatarImage src={user?.avatar} alt={user?.name} />
                   <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                  <span className="truncate font-semibold">{user?.name}</span>
+                  <span className="truncate text-xs">{user?.email}</span>
                 </div>
               </div>
             </DropdownMenuLabel>
