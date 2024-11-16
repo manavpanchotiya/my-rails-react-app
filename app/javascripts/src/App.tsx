@@ -1,76 +1,43 @@
+// Import React and hooks
 import React, { useState } from "react";
+
+// Redux provider
 import { Provider } from "react-redux";
 import store from "@/app/store";
+
+// Theme Provider
 import { ThemeProvider } from "@/lib/theme-provider";
-import Home from "@/pages/home";
-import Login from "@/components/auth/login";
-import Signup from "@/components/auth/signup";
-import { OtpVerification } from "@/pages/auth/OtpVerification";
-import { Page } from "@/components/auth/page";
 
-import PublicLayout from "@/layouts/public-layout";
-import PrivateLayout from "@/layouts/private-layout";
-import SettingsLayout from "@/pages/settings/layout";
-import UserManagementLayout from "@/pages/user-management";
-import Roles from "@/pages/user-management/roles";
-import Users from "@/pages/user-management/users";
-import RolePermissions from "@/pages/user-management/role_permissions";
-
-import { Notifications } from "@/pages/notification/index";
-
-import Dashboard from "@/pages/dashboard/index";
-
+// Router Imports
 import { BrowserRouter } from "react-router-dom";
-import { Navigate, Route, Routes } from "react-router";
-import Account from "@/pages/settings/account/page";
-import Profile from "@/pages/settings/profile/page";
-import Categories from "@/pages/categories/page";
-import NotFoundPage from "@/public/404";
-import NotAuthorizedPage from "@/pages/public/403";
-import { Toaster } from 'sonner'
 
-import useNotificationsChannel from '@/hooks/use-notification-channel';
+// Notification and Toast Imports
+import { Toaster } from "sonner";
+import useNotificationsChannel from "@/hooks/use-notification-channel";
 
-const App = (props) => {
-const [messages, setMessages] = useState<string[]>([]);
-useNotificationsChannel((data) => {
+// AppRoutes Import
+import AppRoutes from "@/routes/AppRoutes";
+
+// Main App Component
+const App = () => {
+  // State for storing messages
+  const [messages, setMessages] = useState<string[]>([]);
+
+  // Hook to listen for notification messages
+  useNotificationsChannel((data) => {
     setMessages((prevMessages) => [...prevMessages, data.message]);
-});
-return (
-  <ThemeProvider>
-    <Provider store={store}>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<PublicLayout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/signin" element={<Page />} />
-            <Route path="/signup" element={<Signup />} />
-          </Route>
+  });
 
-          <Route path="/" element={<PrivateLayout />}>
-            <Route path="dashboard" element={<Dashboard />} />
-            <Route path="notification" element={<Notifications />} />
-
-            <Route path="categories" element={<Categories />} />
-            <Route path="/user-management" element={<UserManagementLayout />}>
-              <Route path="roles" element={<Roles />} />
-              <Route path="users" element={<Users />} />
-              <Route path="role-permissions" element={<RolePermissions />} />
-            </Route>
-            <Route path="settings" element={<SettingsLayout />}>
-              <Route path="account" element={<Account />} />
-              <Route path="profile" element={<Profile />} />
-            </Route>
-          </Route>
-          <Route path="not-authorized" element={<NotAuthorizedPage />} />
-          {/* Fallback route */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </BrowserRouter>
-    </Provider>
-    <Toaster richColors/>
-  </ThemeProvider>
-)
-}
+  return (
+    <ThemeProvider>
+      <Provider store={store}>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+        <Toaster richColors />
+      </Provider>
+    </ThemeProvider>
+  );
+};
 
 export default App;

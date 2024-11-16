@@ -8,6 +8,7 @@ export type RootState = ReturnType<typeof store.getState>;
 
 // Define the type of the dispatch function
 export type AppDispatch = typeof store.dispatch;
+
 // Create the store
 const store = configureStore({
   reducer: {
@@ -15,7 +16,9 @@ const store = configureStore({
     [authApi.reducerPath]: authApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(authApi.middleware, authMiddleware as Middleware),
+    getDefaultMiddleware({
+      serializableCheck: false, // Disable serializable check for better performance
+    }).concat(authApi.middleware, authMiddleware as Middleware),
 });
 
 // Export the store

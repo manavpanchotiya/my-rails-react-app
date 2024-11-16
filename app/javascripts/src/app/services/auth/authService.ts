@@ -1,3 +1,4 @@
+// authService.ts
 import { baseQueryWithReauth } from "../baseService";
 import { createApi, FetchArgs, BaseQueryFn } from "@reduxjs/toolkit/query/react";
 
@@ -27,3 +28,4 @@ export const authApi = createApi({
 
 // Export the generated hook
 export const { useGetUserDetailsQuery } = authApi;
+
