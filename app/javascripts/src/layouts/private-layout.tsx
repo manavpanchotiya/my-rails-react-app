@@ -20,7 +20,7 @@ import { Bell } from "lucide-react";
 import { Navigate, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux'
 import { logout, setCredentials } from '@/features/auth/authSlice'
-import { useLocation, matchRoutes, Link } from "react-router-dom";
+import { useLocation, matchRoutes, Link, useNavigate } from "react-router-dom";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Notification } from "@/components/notification";
 import { useGetUserDetailsQuery } from '@/app/services/auth/authService'
@@ -63,12 +63,11 @@ function generateBreadcrumbs(location) {
 
 export default function PrivateLayout() {
   const { loading, isLoggedIn, userInfo } = useSelector((state) => state.auth);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { data, isFetching, error } = useGetUserDetailsQuery('userDetails', {
     pollingInterval: 900000, // 15mins
   })
-
-
 
   useEffect(() => {
     if (data){

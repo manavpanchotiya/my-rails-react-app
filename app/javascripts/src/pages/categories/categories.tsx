@@ -6,6 +6,7 @@ import { createColumns } from "@/components/data-table/column-def"
 import { CategorySheet } from "./category-sheet"
 import { toast } from "sonner";
 import { Loader } from "@/components/common/loader"
+import { useNavigate } from "react-router-dom";
 // Define the Category type
 type Category = {
   id: string;
@@ -24,6 +25,7 @@ export default function Categories() {
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
 
+  const navigate = useNavigate();
   const selectedRows = useMemo(
     () => categories.filter((_, index) => rowSelection[index]),
     [rowSelection, categories]
@@ -39,6 +41,9 @@ export default function Categories() {
       setCategories(response.data.categories);
       setPermissions(response.data.permissions)
     } catch (error) {
+      if(error.response?.status === 403){
+         navigate("/not-authorized");
+      }
       setError('Error fetching categories');
     } finally {
       setLoading(false);

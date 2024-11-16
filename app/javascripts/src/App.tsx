@@ -25,6 +25,8 @@ import { Navigate, Route, Routes } from "react-router";
 import Account from "@/pages/settings/account/page";
 import Profile from "@/pages/settings/profile/page";
 import Categories from "@/pages/categories/page";
+import NotFoundPage from "@/public/404";
+import NotAuthorizedPage from "@/pages/public/403";
 import { Toaster } from 'sonner'
 
 import useNotificationsChannel from '@/hooks/use-notification-channel';
@@ -60,7 +62,7 @@ return (
               <Route path="profile" element={<Profile />} />
             </Route>
           </Route>
-
+          <Route path="not-authorized" element={<NotAuthorizedPage />} />
           {/* Fallback route */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>

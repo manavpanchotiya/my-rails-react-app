@@ -1,5 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosInstance } from "axios";
-import store from "@/app/store"; // Import your Redux store
+import store from "@/app/store";
 
 const backendURL =
   process.env.NODE_ENV !== "production"
@@ -29,5 +29,18 @@ axiosInstance.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
+// // Handle global responses
+// axiosInstance.interceptors.response.use(
+//   (response) => {
+//     return response; // Pass through successful responses
+//   },
+//   (error) => {
+//     if (error.response?.status === 403) {
+//       // window.location.href = "/not-authorized";
+//     }
+//     return Promise.reject(error);
+//   }
+// );
 
 export default axiosInstance;
