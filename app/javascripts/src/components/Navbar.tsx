@@ -129,15 +129,12 @@ export const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex gap-2">
-            <Button variant="outline" asChild>
-              <Link to="/signin">Log In</Link>
-            </Button>
             <Button asChild>
-              <Link to="/signup">Get Started</Link>
+              <Link to="/signin">Get Started</Link>
             </Button>
             <a
               rel="noreferrer noopener"
-              href="https://github.com/leoMirandaa/shadcn-landing-page.git"
+              href="https://github.com/arish-me/rails-vite-wheel"
               target="_blank"
               className={`border ${buttonVariants({ variant: "secondary" })}`}
             >

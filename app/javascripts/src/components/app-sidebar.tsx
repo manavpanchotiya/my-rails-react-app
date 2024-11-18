@@ -24,9 +24,15 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-// This is sample data.
-const data = {
-  navMain: [
+
+
+export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+// Utility to check permissions
+function hasPermission(permissions: string[][], resource: string): boolean {
+  return permissions.some((permission) => permission[0] === resource);
+}
+
+const navMain = [
     {
       title: "Admin",
       url: "#",
@@ -36,18 +42,27 @@ const data = {
         {
           title: "User Management",
           url: "/user-management",
+          permission: "User", // Required resource
         },
         {
           title: "Categories",
           url: "/categories",
-        }
+          permission: "Category", // Required resource
+        },
       ],
     },
-  ],
+  ];
+  const { permissions } = props.user
+   // Filter navMain based on permissions
+    const filteredNavMain = navMain
+    .map((item) => ({
+      ...item,
+      items: item.items?.filter((subItem) =>
+        hasPermission(permissions, subItem.permission)
+      ),
+    }))
+    .filter((item) => item.items?.length > 0);
 
-}
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -55,7 +70,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <TeamSwitcher user={props.user} />
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
+        <NavMain items={filteredNavMain} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={props.user} />

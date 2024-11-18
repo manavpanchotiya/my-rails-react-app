@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
-  registerUser,
   userLogin,
   userLogout,
   destroyUser,
@@ -24,12 +23,11 @@ interface AuthState {
 
 // Initialize userToken from local storage
 const userToken = localStorage.getItem("userToken") || null;
-const userInfo: UserInfo | null = null;
 const isLoggedIn = !!userToken;
 
 const initialState: AuthState = {
   loading: false,
-  userInfo,
+  userInfo: null,
   userToken,
   error: null,
   success: false,
@@ -41,13 +39,15 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     logout: (state) => {
-      localStorage.removeItem("userToken"); // Delete token from storage
-      state.loading = false;
-      state.isLoggedIn = false; // Change from null to false
-      state.userInfo = null;
-      state.userToken = null;
-      state.email = null;
-      state.error = null;
+      localStorage.removeItem("userToken");
+      return {
+        ...state,
+        loading: false,
+        isLoggedIn: false,
+        userInfo: null,
+        userToken: null,
+        error: null,
+      };
     },
     setCredentials: (
       state,
@@ -58,96 +58,73 @@ const authSlice = createSlice({
     },
     updateToken: (state, { payload }: PayloadAction<string>) => {
       state.userToken = payload;
-      localStorage.setItem("userToken", payload); // Update the token in local storage
+      localStorage.setItem("userToken", payload);
     },
   },
-  extraReducers: {
-    // Login user
-    [userLogin.pending.type]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [userLogin.fulfilled.type]: (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
-      state.loading = false;
-      //state.userInfo = payload.data;
-      state.email = payload.data.email;
-      //state.isLoggedIn = false; // Set to true if login is successful
-      //state.userToken = payload.userToken;
-    },
-    [userLogin.rejected.type]: (state, { payload }: PayloadAction<string | null>) => {
-      state.loading = false;
-      state.isLoggedIn = false;
-      state.error = payload || "Login failed"; // Provide a default message
-    },
-
-    [verifyOTP.pending.type]: (state) => {
-      state.loading = true;
-      state.isLoggedIn = false;
-      state.error = null;
-    },
-    [verifyOTP.fulfilled.type]: (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
-      state.loading = false;
-      state.userInfo = payload.data;
-      state.email = payload.data.email;
-      state.isLoggedIn = payload.isLoggedIn;
-      state.userToken = payload.userToken;
-    },
-    [verifyOTP.rejected.type]: (state, { payload }: PayloadAction<string | null>) => {
-      state.loading = false;
-      state.isLoggedIn = false;
-      state.error = payload || "Login failed"; // Provide a default message
-    },
-
-
-    // Logout user
-    [userLogout.pending.type]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [userLogout.fulfilled.type]: (state) => {
-      state.loading = false;
-      state.isLoggedIn = false; // Change from null to false
-      state.userInfo = null;
-      state.userToken = null;
-      state.error = null;
-    },
-    [userLogout.rejected.type]: (state, { payload }: PayloadAction<string | null>) => {
-      state.loading = false;
-      state.error = payload || "Logout failed"; // Provide a default message
-    },
-
-    // Destroy user
-    [destroyUser.pending.type]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [destroyUser.fulfilled.type]: (state) => {
-      state.loading = false;
-      state.isLoggedIn = false; // Change from null to false
-      state.userInfo = null;
-      state.userToken = null;
-      state.error = null;
-    },
-    [destroyUser.rejected.type]: (state, { payload }: PayloadAction<string | null>) => {
-      state.loading = false;
-      state.error = payload || "Failed to destroy user"; // Provide a default message
-    },
-
-    // Register user
-    [registerUser.pending.type]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [registerUser.fulfilled.type]: (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
-      state.loading = false;
-      state.userInfo = payload.data;
-      state.isLoggedIn = true; // Set to true if registration is successful
-      state.userToken = payload.userToken;
-    },
-    [registerUser.rejected.type]: (state, { payload }: PayloadAction<string | null>) => {
-      state.loading = false;
-      state.error = payload || "Registration failed"; // Provide a default message
-    },
+  extraReducers: (builder) => {
+    builder
+      // Login user
+      .addCase(userLogin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(userLogin.fulfilled, (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
+        state.loading = false;
+        state.email = payload.data.email;
+      })
+      .addCase(userLogin.rejected, (state, { payload }: PayloadAction<string | null>) => {
+        state.loading = false;
+        state.isLoggedIn = false;
+        state.error = payload || "Login failed";
+      })
+      // Verify OTP
+      .addCase(verifyOTP.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(verifyOTP.fulfilled, (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
+        state.loading = false;
+        state.userInfo = payload.data;
+        state.email = payload.data.email;
+        state.userToken = payload.userToken;
+        state.isLoggedIn = true;
+      })
+      .addCase(verifyOTP.rejected, (state, { payload }: PayloadAction<string | null>) => {
+        state.loading = false;
+        state.error = payload || "OTP verification failed";
+      })
+      // Logout user
+      .addCase(userLogout.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(userLogout.fulfilled, (state) => {
+        state.loading = false;
+        state.isLoggedIn = false;
+        state.userInfo = null;
+        state.userToken = null;
+        state.error = null;
+      })
+      .addCase(userLogout.rejected, (state, { payload }: PayloadAction<string | null>) => {
+        state.loading = false;
+        state.error = payload || "Logout failed";
+      })
+      // Destroy user
+      .addCase(destroyUser.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(destroyUser.fulfilled, (state) => {
+        state.loading = false;
+        state.isLoggedIn = false;
+        state.userInfo = null;
+        state.userToken = null;
+        state.error = null;
+      })
+      .addCase(destroyUser.rejected, (state, { payload }: PayloadAction<string | null>) => {
+        state.loading = false;
+        state.error = payload || "Failed to destroy user";
+      });
   },
 });
 

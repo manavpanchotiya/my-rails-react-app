@@ -44,6 +44,7 @@ type DataTableProps<TData> = {
 
 export function DataTable<TData>({
   data,
+  disabled,
   columns,
   filterColumns,
   modelName,
@@ -130,7 +131,7 @@ export function DataTable<TData>({
 
         {/* New Category and Delete Selected buttons aligned to the right */}
         <div className="flex items-center space-x-2">
-          {selectedRows.length > 0 && (
+          {selectedRows.length > 0 && !disabled && (
             <Button
               size="sm"
               variant="destructive"
@@ -141,9 +142,9 @@ export function DataTable<TData>({
             </Button>
           )}
 
-          {onNewItem && (
+          {onNewItem && !disabled && (
             <Button size="sm" onClick={onNewItem}>
-              <PlusIcon className="mr-2 size-4" aria-hidden="true" />
+              <PlusIcon className="size-4" aria-hidden="true" />
               New {modelName}
             </Button>
           )}

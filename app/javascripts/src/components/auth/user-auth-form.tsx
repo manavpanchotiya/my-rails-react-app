@@ -1,17 +1,18 @@
-"use client";
-
-import * as React from "react";
-import { cn } from "@/lib/utils";
-import { Icons } from "@/components/Icons";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+// Import React and dependencies
+import React, { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
+// Component and utility imports
+import { cn } from "@/lib/utils";
+import { Icons } from "@/components/Icons";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
   Form,
   FormControl,
@@ -26,39 +27,39 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { userLogin, verifyOTP } from "@/features/auth/authActions";
-import { useDispatch, useSelector } from "react-redux";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
+import { userLogin, verifyOTP } from "@/features/auth/authActions";
 
+// Interface for props
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
+// UserAuthForm Component
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [showOtpForm, setShowOtpForm] = React.useState(false);
-  const [otp_code, setOtpCode] = React.useState("");
-  const [showNotification, setShowNotification] = React.useState(false);
-  const [isResendDisabled, setIsResendDisabled] = React.useState(true);
-  const [timer, setTimer] = React.useState(30);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showOtpForm, setShowOtpForm] = useState(false);
+  const [otp_code, setOtpCode] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+  const [isResendDisabled, setIsResendDisabled] = useState(true);
+  const [timer, setTimer] = useState(30);
+  const [otpError, setOtpError] = useState("");
 
   const navigate = useNavigate();
-
-  const { email, isLoggedIn } = useSelector((state: any) => state.auth);
-  const resoi = useSelector((state: any) => console.log(state.auth));
-
   const dispatch = useDispatch();
+  const { email } = useSelector((state: any) => state.auth);
 
+  // Schema validation using Zod
   const formSchema = z.object({
     email: z.string().email({ message: "Invalid email address" }),
   });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "thermic.arish@gmail.com" },
+    defaultValues: { email: "" },
   });
 
   const otpForm = useForm({
@@ -83,21 +84,28 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   };
 
   const onSubmitOtp: SubmitHandler<any> = async (values) => {
-    console.log("OTP Submitted:", values);
-
     const data = {
       ...values,
       email,
     };
-
     const result = await dispatch(verifyOTP(data));
 
+    if (verifyOTP.fulfilled.match(result)) {
+      // OTP verification successful, navigate to the next page
+      navigate("/dashboard");
+    } else {
+      // Show error message when OTP is invalid
+      setOtpError("Invalid OTP. Please try again.");
+      console.error("OTP verification failed:", result.error.message);
+    }
   };
-
 
   const handleBack = () => setShowOtpForm(false);
 
-  const handleOtpChange = (value: string) => setOtpCode(value);
+  const handleOtpChange = (value: string) => {
+    setOtpCode(value);
+    setOtpError(""); // Clear error when OTP is being changed
+  };
 
   const startOtpTimer = () => {
     const interval = setInterval(() => {
@@ -123,7 +131,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     visible: { x: 0, opacity: 1 },
     exit: { x: "100%", opacity: 0 },
   };
-
 
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -162,7 +169,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                       className="justify-center"
                       onChange={(value) => {
                         handleOtpChange(value);
-                        otpForm.setValue("otp_code", value); // update form value
+                        otpForm.setValue("otp_code", value);
                       }}
                     >
                       <InputOTPGroup>
@@ -178,6 +185,9 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                       </InputOTPGroup>
                     </InputOTP>
                   </div>
+                  {otpError && (
+                    <p className="text-center text-red-500 text-sm">{otpError}</p>
+                  )}
                   <Button
                     type="submit"
                     className="w-full"
@@ -278,8 +288,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
                   <Icons.gitHub className="mr-2 h-4 w-4" />
-                )}{" "}
-                GitHub
+                )} GitHub
               </Button>
             </div>
           </>

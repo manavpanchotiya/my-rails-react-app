@@ -1,24 +1,17 @@
 # frozen_string_literal: true
 
-User.create!(email: 'thermic.arish@gmail.com', password: 'thermic.arish@gmail.com',
-             password_confirmation: 'thermic.arish@gmail.com')
-
 # Create Roles
 %w[Admin SuperAdmin Guest User].each do |name|
   Role.create(name:)
 end
 
-# Create Permissions
+user = User.create!(email: 'thermic.arish@gmail.com', password: 'thermic.arish@gmail.com',
+             password_confirmation: 'thermic.arish@gmail.com')
 
-# First, ensure all models are loaded
-Rails.application.eager_load!
-
-# Fetch all model names
-model_names = ActiveRecord::Base.descendants.map(&:name)
+user.assign_default_role(role_name: 'Admin')
 
 MODEL_NAME=%w[
 User
-Profile
 Category
 Role
 RolePermission

@@ -4,19 +4,18 @@ class ApplicationController < ActionController::Base
   include RackSessionFix
   before_action :refresh_jwt_if_needed
   before_action :configure_permitted_parameters, if: :devise_controller?
+  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   def self.session_store
     :disabled
   end
 
-  # before_action :set_cors_headers
-
-  # def set_cors_headers
-  #   response.headers['Access-Control-Allow-Origin'] = '*'
-  #   response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type'
-  #   response.headers['Access-Control-Expose-Headers'] = 'Authorization'  # Add this line
-  #   response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-  # end
+  # Global handling for unauthorized access
+  def user_not_authorized(exception)
+    # if request.format.json?
+      render json: { error: "You are not authorized to perform this action." }, status: :forbidden
+    # end
+  end
 
   def refresh_jwt_if_needed
     return unless user_signed_in? && current_user
