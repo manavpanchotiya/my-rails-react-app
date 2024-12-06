@@ -3,11 +3,14 @@ import { updateToken, logout } from "@/features/auth/authSlice";
 import { RootState } from "@/store"; // Adjust the import path as necessary
 
 const baseQuery: BaseQueryFn<string | FetchArgs, unknown, { status: number; message?: string }> = fetchBaseQuery({
-  baseUrl: "http://localhost:3000/",
+
+  baseUrl: process.env.APP_URL,
+
   prepareHeaders: (headers, { getState }) => {
     const token = (getState() as RootState).auth.userToken; // Ensure you replace `RootState` with the correct type
     if (token) {
       headers.set("authorization", `${token}`);
+      headers.set("X-Galaxy-Header", 'arish');
     }
     return headers;
   },

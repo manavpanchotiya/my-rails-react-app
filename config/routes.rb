@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
+  # config/routes.rb
+constraints lambda { |req| req.headers['X-Galaxy-Header'] == 'arish' } do
   devise_for :users, path: '', path_names: {
                                  sign_in: 'login',
                                  sign_out: 'logout',
@@ -11,6 +13,7 @@ Rails.application.routes.draw do
                        registrations: 'users/registrations',
                        passwords: 'users/passwords'
                      }
+
   devise_scope :user do
     post 'verify_otp', to: 'users/sessions#verify_otp'
     post 'change_password', to: 'users/registrations#change_password'
@@ -45,6 +48,7 @@ Rails.application.routes.draw do
       resources :organization_settings
     end
   end
+end
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
