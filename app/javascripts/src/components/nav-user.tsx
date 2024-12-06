@@ -4,9 +4,7 @@ import {
   BadgeCheck,
   Bell,
   ChevronsUpDown,
-  CreditCard,
   LogOut,
-  Sparkles,
 } from "lucide-react"
 
 import {
@@ -31,7 +29,7 @@ import {
 } from "@/components/ui/sidebar"
 
 import { userLogout } from "@/features/auth/authActions";
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link } from "react-router-dom";
 export function NavUser({
   user,

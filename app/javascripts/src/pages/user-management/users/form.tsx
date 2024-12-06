@@ -43,6 +43,7 @@ export function ResourceForm({ resource, onSave, ...props }: ResourceProps) {
       const response = await fetch();
       setAvailableRoles(response.data.roles);
     } catch (error) {
+      console.warn(error)
       toast.error('Error fetching roles');
     }
   };

@@ -51,7 +51,7 @@ export default function Category() {
     }
   };
 
-  const { can_view, can_edit } = permissions;
+  const { can_edit } = permissions;
 
   const handleNewResource = () => {
     setCurrentResource(null);
@@ -83,7 +83,7 @@ export default function Category() {
     }
   };
 
-  const handleSaveResource = (newResource: Resource) => {
+  const handleSaveResource = () => {
     fetchResource();
     setIsEditing(false);
   };

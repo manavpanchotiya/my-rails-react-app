@@ -1,5 +1,5 @@
-import { Middleware } from 'redux';
-import { jwtDecode } from "jwt-decode";
+import { Middleware } from "redux";
+import { jwtDecode } from "jwt-decode"; // Adjusted import for jwt-decode
 import { logout } from "@/features/auth/authSlice";
 import { RootState } from "@/store";
 
@@ -8,7 +8,7 @@ interface TokenPayload {
   exp: number; // Expiration time in seconds since epoch
 }
 
-const authMiddleware: Middleware<{}, RootState> = (store) => (next) => (action) => {
+const authMiddleware: Middleware<unknown, RootState> = (store) => (next) => (action) => {
   // Prevent processing the logout action to avoid infinite loops
   if (action.type === logout.type) {
     return next(action);
@@ -20,14 +20,14 @@ const authMiddleware: Middleware<{}, RootState> = (store) => (next) => (action) 
   if (userToken) {
     try {
       // Decode the token to check its expiration
-      const tokenPayload: TokenPayload = jwtDecode(userToken);
+      const tokenPayload: TokenPayload = jwtDecode<TokenPayload>(userToken);
       const isTokenExpired = tokenPayload.exp * 1000 < Date.now();
 
       if (isTokenExpired) {
         store.dispatch(logout()); // Dispatch the logout action if the token is expired
         return; // Stop further action dispatch
       }
-    } catch (error) {
+    } catch {
       // If decoding fails, assume the token is invalid and log out the user
       store.dispatch(logout());
       return;

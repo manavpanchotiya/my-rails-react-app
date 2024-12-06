@@ -36,8 +36,9 @@ export default function Users() {
     try {
       const response = await fetch();
       setResources(response.data);
-    } catch (error) {
-      setError('Error fetching users');
+    } catch (err) {
+      const error = err?.response?.data?.error || 'An error occurred';
+      setError(`Error fetching users ${error}`);
     } finally {
       setLoading(false);
     }
@@ -73,7 +74,7 @@ export default function Users() {
     }
   };
 
-  const handleSaveResource = (newResource: User) => {
+  const handleSaveResource = () => {
     fetchResources();
     setIsEditing(false);
   };

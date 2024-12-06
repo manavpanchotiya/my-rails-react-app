@@ -1,5 +1,4 @@
 import React from "react";
-import { Button } from "@/components/ui/button"
 
 import { Sponsors } from "@/components/Sponsors";
 import { About } from "@/components/About";
@@ -17,7 +16,7 @@ import { Services } from "@/components/Services";
 import { Team } from "@/components/Team";
 import { Testimonials } from "@/components/Testimonials";
 
-const Home = props => (
+const Home = () => (
  <>
       <Navbar />
       <Hero />

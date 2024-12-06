@@ -1,6 +1,5 @@
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -8,16 +7,14 @@ import {
 } from "@/components/ui/sheet";
 
 
-import { resourceFormSchema, ResourceFormValues } from './resourceFormSchema'; // Import form schema
-
-import { Icons } from "@/components/icons";
-import { CommonAlert } from "@/components/CommonAlert"
+import { ResourceFormValues } from './resourceFormSchema'; // Import form schema
 import { ResourceForm } from "./form"
 
 interface ResourceProps {
   resource?: Resource; // category is optional now
   onSave: (resource: ResourceFormValues) => void;
   onOpenChange?: (isOpen: boolean) => void;
+  modelName?: string;
 }
 
 export function ResourceSheet({ resource, onSave, modelName, ...props }: ResourceProps) {

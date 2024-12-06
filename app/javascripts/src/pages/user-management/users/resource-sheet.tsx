@@ -1,36 +1,22 @@
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetDescription,
-} from "@/components/ui/sheet";
-
-import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 
-
-import { resourceFormSchema, ResourceFormValues } from './resourceFormSchema'; // Import form schema
-import { update, create } from '@/apis/categoriesApi';
-import { Icons } from "@/components/icons";
-import { CommonAlert } from "@/components/CommonAlert"
+import { ResourceFormValues } from './resourceFormSchema'; // Import form schema
 import { ResourceForm } from "./form"
 
 interface ResourceProps {
   resource?: Resource; // category is optional now
   onSave: (resource: ResourceFormValues) => void;
   onOpenChange?: (isOpen: boolean) => void;
+  modelName?: string;
 }
 
-export function ResourceSheet({ modelName, resource, onSave, ...props }: ResourceProps) {
+export function ResourceSheet({ resource, modelName, onSave, ...props }: ResourceProps) {
   return (
     <Dialog {...props}>
       <DialogContent className="max-w-4xl">

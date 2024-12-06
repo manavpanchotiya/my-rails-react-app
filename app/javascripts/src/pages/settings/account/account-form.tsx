@@ -21,7 +21,7 @@ import { toast } from "sonner";
 export function AccountForm() {
   const [isProcessing, setIsProcessing] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
-  const result= useSelector((state) => console.log(state.auth));
+  // const result= useSelector((state) => console.log(state.auth));
   const [isSheetOpen, setSheetOpen] = useState(false);
 
   const changeEmailFormSchema = z.object({

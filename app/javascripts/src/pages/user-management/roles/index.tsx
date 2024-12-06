@@ -37,6 +37,7 @@ export default function Roles() {
       const response = await fetch();
       setResources(response.data.roles);
     } catch (error) {
+      console.warn(error)
       setError('Error fetching roles');
     } finally {
       setLoading(false);
@@ -73,7 +74,7 @@ export default function Roles() {
     }
   };
 
-  const handleSaveResource = (newResource: Role) => {
+  const handleSaveResource = () => {
     fetchResources();
     setIsEditing(false);
   };

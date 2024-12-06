@@ -1,19 +1,9 @@
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
   SquareTerminal,
 } from "lucide-react"
 
 import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
 import { NavUser } from "@/components/nav-user"
 import { TeamSwitcher } from "@/components/team-switcher"
 import {
@@ -25,8 +15,12 @@ import {
 } from "@/components/ui/sidebar"
 
 
-
-export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
+  user: {
+    permissions: string[][]; // Permissions as an array of arrays of strings
+  };
+}
+export function AppSidebar({...props }: AppSidebarProps) {
 // Utility to check permissions
 function hasPermission(permissions: string[][], resource: string): boolean {
   return permissions.some((permission) => permission[0] === resource);

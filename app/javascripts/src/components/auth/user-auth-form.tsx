@@ -36,10 +36,10 @@ import {
 import { userLogin, verifyOTP } from "@/features/auth/authActions";
 
 // Interface for props
-interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
+// interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 // UserAuthForm Component
-export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
+export function UserAuthForm({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   const [isLoading, setIsLoading] = useState(false);
   const [showOtpForm, setShowOtpForm] = useState(false);
   const [otp_code, setOtpCode] = useState("");
@@ -230,7 +230,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           <>
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                Let's get started
+                Let&#39;s get started
               </h1>
               <p className="text-sm text-muted-foreground">
                 Enter your email below to create your account

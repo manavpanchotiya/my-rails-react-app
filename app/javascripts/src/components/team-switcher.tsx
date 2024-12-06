@@ -1,20 +1,8 @@
 import * as React from "react"
-import { ChevronsUpDown, Plus } from "lucide-react"
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  useSidebar,
 } from "@/components/ui/sidebar"
 
 import {
@@ -23,16 +11,24 @@ import {
   AvatarImage,
 } from "@/components/ui/avatar"
 
-export function TeamSwitcher({
-  user,
-}: {
-  teams: {
-    name: string
-    logo: React.ElementType
-    plan: string
-  }[]
-}) {
-const { isMobile } = useSidebar()
+interface Profile {
+  first_name?: string;
+  last_name?: string;
+  image_url?: string;
+}
+
+interface User {
+  email: string;
+  profile?: Profile;
+}
+
+// Define TeamSwitcherProps
+interface TeamSwitcherProps {
+  user: User;
+}
+
+
+export function TeamSwitcher({ user }: TeamSwitcherProps) {
 const { profile } = user;
   //const [activeTeam, set] = React.useState(teams[0])
 const formatName = (user) => {
