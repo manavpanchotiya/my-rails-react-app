@@ -1,4 +1,3 @@
-// Categories.tsx
 import { useEffect, useState, useMemo } from 'react';
 import { fetch, bulkDelete } from '@/apis/categoriesApi';
 import { DataTable } from "@/components/data-table/data-table"
@@ -68,7 +67,7 @@ export default function Category() {
     if (selectedRows.length > 0) {
       try {
         const response = await bulkDelete({ ids: selectedRows.map(cat => cat.id) });
-        await fetchCategories();
+        await fetchResource();
         const { notice } = response.data;
         toast.success(notice);
         setRowSelection({});
@@ -85,7 +84,7 @@ export default function Category() {
   };
 
   const handleSaveResource = (newResource: Resource) => {
-    fetchCategories();
+    fetchResource();
     setIsEditing(false);
   };
 

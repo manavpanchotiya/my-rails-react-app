@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import Resource from "./resource"; // Adjust the path as needed
 
-export default function CategoriesPage() {
+export default function ResourcePage() {
   return (
       <Resource />
 
