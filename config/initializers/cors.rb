@@ -13,7 +13,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
 
     if ->(env) { env['HTTP_GALAXY_HEADER'] == 'arish' }
       resource '*',
-               headers: %w(Authorization),
+               headers: %w[Authorization],
                methods: :any,
                expose: ['Authorization']
     end

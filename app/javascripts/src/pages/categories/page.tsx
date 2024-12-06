@@ -8,11 +8,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import Categories from "./categories"; // Adjust the path as needed
+import Resource from "./resource"; // Adjust the path as needed
 
 export default function CategoriesPage() {
   return (
-      <Categories />
+      <Resource />
 
   );
 }

@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :registerable, :two_factor_authenticatable,
          :jwt_authenticatable,
          jwt_revocation_strategy: self,
-         :otp_secret_encryption_key => ENV['OTP_SECRET_KEY']
+         otp_secret_encryption_key: ENV.fetch('OTP_SECRET_KEY', nil)
 
   # Associations
   has_one :profile, dependent: :destroy
@@ -22,7 +22,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :profile, allow_destroy: true
   accepts_nested_attributes_for :user_roles, allow_destroy: true
 
-#  attr_accessor :otp_code
+  #  attr_accessor :otp_code
 
   # Set OTP requirement only for login
   before_create :generate_otp_secret
@@ -31,7 +31,7 @@ class User < ApplicationRecord
   def send_two_factor_authentication_code
     # Send OTP via email, SMS, etc.
     # Example for email:
-    #UserMailer.otp_code(self).deliver_now
+    # UserMailer.otp_code(self).deliver_now
   end
 
   # def generate_otp!

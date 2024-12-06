@@ -8,7 +8,7 @@ module Api
       # GET /notifications
       def index
         @notifications = current_user.notifications
-        has_unread = current_user.notifications.unread.count > 0
+        has_unread = current_user.notifications.unread.count.positive?
         render_json(notifications: @notifications, has_unread: has_unread)
       end
 

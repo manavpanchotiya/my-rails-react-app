@@ -18,38 +18,38 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { categoryFormSchema, CategoryFormValues } from '.././categoryFormSchema'; // Import form schema
+import { resourceFormSchema, ResourceFormValues } from '.././resourceFormSchema'; // Import form schema
 import { update, create } from '@/apis/categoriesApi';
 import { Icons } from "@/components/icons";
 import { CommonAlert } from "@/components/CommonAlert"
 
-interface CategoryProps {
-  category?: Category; // category is optional now
-  onSave: (category: CategoryFormValues) => void;
+interface ResourceProps {
+  resource?: Resource;
+  onSave: (resource: ResourceFormValues) => void;
   onOpenChange?: (isOpen: boolean) => void;
 }
 
-export function CategoryForm({ category, onSave, ...props }: CategoryProps) {
+export function ResourceForm({ resource, onSave, ...props }: ResourceProps) {
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const form = useForm<CategoryFormValues>({
-    resolver: zodResolver(categoryFormSchema),
+  const form = useForm<ResourceFormValues>({
+    resolver: zodResolver(resourceFormSchema),
     defaultValues: {
-      name: category?.name ?? "", // Set default name for edit, empty for new
+      name: resource?.name ?? "", // Set default name for edit, empty for new
     },
   });
 
   useEffect(() => {
     form.reset({
-      name: category?.name ?? "",
+      name: resource?.name ?? "",
     });
-  }, [category, form]);
+  }, [resource, form]);
 
-  async function onSubmit(input: CategoryFormValues) {
+  async function onSubmit(input: ResourceFormValues) {
     setIsProcessing(true);
     try {
-      if (category) {
-        const response = await update(category.id, input);
+      if (resource) {
+        const response = await update(resource.id, input);
         const { notice } = response.data;
         form.reset();
         props.onOpenChange?.(false);

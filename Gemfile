@@ -21,10 +21,10 @@ gem 'jbuilder'
 
 gem 'devise'
 gem 'devise-jwt'
+gem 'devise-two-factor'
 gem 'dotenv', groups: %i[development test]
 gem 'image_processing'
 gem 'pundit'
-gem 'devise-two-factor'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 
