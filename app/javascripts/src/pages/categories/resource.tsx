@@ -1,44 +1,45 @@
-// Categories.tsx
 import { useEffect, useState, useMemo } from 'react';
 import { fetch, bulkDelete } from '@/apis/categoriesApi';
 import { DataTable } from "@/components/data-table/data-table"
 import { createColumns } from "@/components/data-table/column-def"
-import { CategorySheet } from "./category-sheet"
+import { ResourceSheet } from "./resource-sheet"
 import { toast } from "sonner";
 import { Loader } from "@/components/common/loader"
 import { useNavigate } from "react-router-dom";
-// Define the Category type
-type Category = {
+// Define the Resource type
+type Resource = {
   id: string;
   name: string;
   created_at: string;
   updated_at: string;
 };
 
-export default function Categories() {
-  const [categories, setCategories] = useState<Category[]>([]);
+export default function Category() {
+  const modelName= 'Category'
+
+  const [resource, setResource] = useState<Resource[]>([]);
   const [permissions, setPermissions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
+  const [currentResource, setCurrentResource] = useState<Resource | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isDialogOpen, setDialogOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
 
   const navigate = useNavigate();
   const selectedRows = useMemo(
-    () => categories.filter((_, index) => rowSelection[index]),
-    [rowSelection, categories]
+    () => resource.filter((_, index) => rowSelection[index]),
+    [rowSelection, resource]
   );
 
   useEffect(() => {
-    fetchCategories();
+    fetchResource();
   }, []);
 
-  const fetchCategories = async () => {
+  const fetchResource = async () => {
     try {
       const response = await fetch();
-      setCategories(response.data.categories);
+      setResource(response.data.categories);
       setPermissions(response.data.permissions)
     } catch (error) {
       if(error.response?.status === 403){
@@ -50,15 +51,15 @@ export default function Categories() {
     }
   };
 
-  const { can_view, can_edit } = permissions;
+  const { can_edit } = permissions;
 
-  const handleNewCategory = () => {
-    setCurrentCategory(null);
+  const handleNewResource = () => {
+    setCurrentResource(null);
     setIsEditing(true);
   };
 
-  const handleEditCategory = (category: Category) => {
-    setCurrentCategory(category);
+  const handleEditResource = (resource: Resource) => {
+    setCurrentResource(resource);
     setIsEditing(true);
   };
 
@@ -66,7 +67,7 @@ export default function Categories() {
     if (selectedRows.length > 0) {
       try {
         const response = await bulkDelete({ ids: selectedRows.map(cat => cat.id) });
-        await fetchCategories();
+        await fetchResource();
         const { notice } = response.data;
         toast.success(notice);
         setRowSelection({});
@@ -82,12 +83,12 @@ export default function Categories() {
     }
   };
 
-  const handleSaveCategory = (newCategory: Category) => {
-    fetchCategories();
+  const handleSaveResource = () => {
+    fetchResource();
     setIsEditing(false);
   };
 
-  const categoryColumns = createColumns<Category>([
+  const ResourceColumns = createColumns<Resource>([
   ...(can_edit
     ? [
         {
@@ -117,7 +118,7 @@ export default function Categories() {
         {
           key: "actions",
           dropdownItems: [
-            { disabled: !can_edit, label: "Edit", onClick: (row) => handleEditCategory(row) },
+            { disabled: !can_edit, label: "Edit", onClick: (row) => handleEditResource(row) },
           ],
         },
       ]
@@ -132,10 +133,10 @@ export default function Categories() {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <DataTable<Category>
-          data={categories}
-          columns={categoryColumns}
-          modelName="Category"
+        <DataTable<Resource>
+          data={resource}
+          columns={ResourceColumns}
+          modelName={modelName}
           filterPlaceholder="Search Categories..."
           filterColumns={[
             { name: "name", type: "text" },
@@ -145,17 +146,18 @@ export default function Categories() {
           rowSelection={rowSelection}
           setRowSelection={setRowSelection}
           onDelete={handleBulkDelete}
-          onNewItem={handleNewCategory}
+          onNewItem={handleNewResource}
           isDialogOpen={isDialogOpen}
           setDialogOpen={setDialogOpen}
         />
       )}
 
-      <CategorySheet
+      <ResourceSheet
         open={isEditing}
         onOpenChange={setIsEditing}
-        category={currentCategory}
-        onSave={handleSaveCategory}
+        resource={currentResource}
+        modelName={modelName}
+        onSave={handleSaveResource}
       />
     </div>
   );

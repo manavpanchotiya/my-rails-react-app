@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -83,6 +81,7 @@ export function ProfileForm() {
         gender: responseProfile?.gender ?? "",
       });
     } catch (error) {
+      console.warn(error)
       toast.error('Error fetching profile');
     } finally {
       setLoading(false);
@@ -192,7 +191,7 @@ export function ProfileForm() {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {Object.entries(genders).map(([key, value]) => (
+                        {Object.entries(genders).map(([key]) => (
                           <SelectItem key={key} value={String(key)}>
                             {key.charAt(0).toUpperCase() + key.slice(1).replace('_', ' ')}
                           </SelectItem>

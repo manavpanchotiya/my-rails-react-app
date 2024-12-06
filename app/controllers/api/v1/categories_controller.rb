@@ -24,7 +24,8 @@ module Api
       def create
         @category = Category.new(category_params)
         Category.create!(category_params)
-        Notification.create(user: current_user, title: 'New Category created', body: 'You have successfully created the item.')
+        Notification.create(user: current_user, title: 'New Category created',
+                            body: 'You have successfully created the item.')
         render_message(I18n.t('successfully_created', entity: 'Category'))
       end
 

@@ -21,7 +21,6 @@ import {
 import { resourceFormSchema, ResourceFormValues } from './formSchema'; // Import form schema
 import { update, create } from '@/apis/rolesApi';
 import { Icons } from "@/components/icons";
-import { CommonAlert } from "@/components/CommonAlert"
 
 interface ResourceProps {
   resource?: Resource; // category is optional now
@@ -29,7 +28,7 @@ interface ResourceProps {
   onOpenChange?: (isOpen: boolean) => void;
 }
 
-export function ResourceForm({ resource, onSave, ...props }: CategoryProps) {
+export function ResourceForm({ resource, onSave, ...props }: ResourceProps) {
   const [isProcessing, setIsProcessing] = useState(false);
 
   const form = useForm<ResourceFormValues>({

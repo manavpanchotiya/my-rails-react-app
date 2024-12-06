@@ -16,8 +16,8 @@ import { Notifications } from "@/pages/notification";
 import Dashboard from "@/pages/dashboard";
 import Account from "@/pages/settings/account/page";
 import Profile from "@/pages/settings/profile/page";
-import Categories from "@/pages/categories/page";
 import NotAuthorizedPage from "@/pages/public/403";
+import Category from "@/pages/categories/page";
 
 const AppRoutes = () => (
   <Routes>
@@ -29,7 +29,7 @@ const AppRoutes = () => (
     <Route path="/" element={<PrivateLayout />}>
       <Route path="dashboard" element={<Dashboard />} />
       <Route path="notification" element={<Notifications />} />
-      <Route path="categories" element={<Categories />} />
+      <Route path="categories" element={<Category />} />
       <Route path="/user-management" element={<UserManagementLayout />}>
         <Route path="roles" element={<Roles />} />
         <Route path="users" element={<Users />} />

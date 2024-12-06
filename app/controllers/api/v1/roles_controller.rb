@@ -9,7 +9,7 @@ module Api
       before_action :load_data, only: :bulk_destroy
 
       def index
-        roles = Role.all
+        roles = Role.excluding_super_admin.includes(:role_permissions).all
         render_json(roles:)
       end
 

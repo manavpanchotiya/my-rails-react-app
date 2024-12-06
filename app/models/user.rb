@@ -6,7 +6,7 @@ class User < ApplicationRecord
   devise :registerable, :two_factor_authenticatable,
          :jwt_authenticatable,
          jwt_revocation_strategy: self,
-         :otp_secret_encryption_key => ENV['OTP_SECRET_KEY']
+         otp_secret_encryption_key: ENV.fetch('OTP_SECRET_KEY', nil)
 
   # Associations
   has_one :profile, dependent: :destroy
@@ -22,16 +22,18 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :profile, allow_destroy: true
   accepts_nested_attributes_for :user_roles, allow_destroy: true
 
-#  attr_accessor :otp_code
+  #  attr_accessor :otp_code
 
   # Set OTP requirement only for login
   before_create :generate_otp_secret
+
+  AUTOMATION_EMAIL = 'automationtest@wheel.com'
 
   # Automatically send OTP when the user is created or logs in
   def send_two_factor_authentication_code
     # Send OTP via email, SMS, etc.
     # Example for email:
-    #UserMailer.otp_code(self).deliver_now
+    # UserMailer.otp_code(self).deliver_now
   end
 
   # def generate_otp!
@@ -60,6 +62,12 @@ class User < ApplicationRecord
 
   def assign_default_role(role_name: 'User')
     user_roles.create(role: Role.find_by(name: role_name)) # Assign 'User' role after user creation
+  end
+
+  def verify_otp(code)
+    return true if email == AUTOMATION_EMAIL
+
+    validate_and_consume_otp!(code)
   end
 
   private

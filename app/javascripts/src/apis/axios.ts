@@ -1,11 +1,11 @@
+
+
 import axios, { AxiosRequestConfig, AxiosInstance } from "axios";
 import store from "@/app/store";
 
-const backendURL =
-  process.env.NODE_ENV !== "production"
-    ? "http://127.0.0.1:3000"
-    : import.meta.env.VITE_SERVER_URL;
+const backendURL = process.env.APP_URL
 
+console.log(process.env.VITE_SERVER_URL)
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: backendURL,
   headers: {
@@ -16,13 +16,14 @@ const axiosInstance: AxiosInstance = axios.create({
 // Attach the token to every request if it exists
 axiosInstance.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    const staticHeaders = 'arish'
     const state = store.getState(); // Get the current Redux state
     const token = state.auth?.userToken; // Access the token from Redux auth slice
+    config.headers["X-Galaxy-Header"] = "arish";
 
     if (token) {
       config.headers["Authorization"] = `${token}`;
     }
-
     return config;
   },
   (error) => {

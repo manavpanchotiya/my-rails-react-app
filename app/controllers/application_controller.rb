@@ -11,9 +11,9 @@ class ApplicationController < ActionController::Base
   end
 
   # Global handling for unauthorized access
-  def user_not_authorized(exception)
+  def user_not_authorized(_exception)
     # if request.format.json?
-      render json: { error: "You are not authorized to perform this action." }, status: :forbidden
+    render json: { error: 'You are not authorized to perform this action.' }, status: :forbidden
     # end
   end
 
@@ -34,7 +34,6 @@ class ApplicationController < ActionController::Base
   rescue JWT::DecodeError
     # Handle token decode errors if needed
   end
-
 
   protected
 

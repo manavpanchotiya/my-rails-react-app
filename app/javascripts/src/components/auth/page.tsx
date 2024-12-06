@@ -1,6 +1,4 @@
 import React from "react";
-import { cn } from "@/lib/utils"; // Assuming you have a utility function for classNames
-import { buttonVariants } from "@/components/ui/button"; // Assuming this is your button styling utility
 import { UserAuthForm } from "./user-auth-form";
 
 export function Page() {

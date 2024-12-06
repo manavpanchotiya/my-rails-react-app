@@ -11,7 +11,7 @@
 Devise.otp_allowed_drift = 240
 Devise.setup do |config|
   config.warden do |manager|
-    manager.default_strategies(:scope => :user).unshift :two_factor_authenticatable
+    manager.default_strategies(scope: :user).unshift :two_factor_authenticatable
   end
 
   # The secret key used by Devise. Devise uses this key to generate
@@ -268,7 +268,7 @@ Devise.setup do |config|
   # should add them to the navigational formats lists.
   #
   # The "*/*" below is required to match Internet Explorer requests.
-  #config.navigational_formats = []
+  # config.navigational_formats = []
 
   # The default HTTP method used to sign out a resource. Default is :delete.
   config.sign_out_via = :delete
@@ -320,7 +320,7 @@ Devise.setup do |config|
     # jwt.secret = Rails.application.credentials.devise_jwt_secret_key!
     jwt.secret = ENV.fetch('JWT_SECRET', nil)
     jwt.request_formats = {
-      user: [:json],
+      user: [:json]
     }
     jwt.dispatch_requests = [['POST', %r{^/verify_otp$}]]
     jwt.revocation_requests = [['DELETE', %r{^/logout$}]]

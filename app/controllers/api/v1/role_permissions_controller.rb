@@ -3,12 +3,11 @@
 module Api
   module V1
     class RolePermissionsController < BaseController
-      #before_action :set_role_permission
+      # before_action :set_role_permission
 
       def index
-        roles = Role.includes(:role_permissions).all
+        roles = Role.excluding_super_admin.includes(:role_permissions).all
         all_resources = RolePermission.distinct.pluck(:resource) # More efficient to use `distinct.pluck`
-
         render json: roles.map { |role| serialize_role(role, all_resources) }
       end
 

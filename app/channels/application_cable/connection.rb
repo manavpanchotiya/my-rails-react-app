@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # app/channels/application_cable/connection.rb
 module ApplicationCable
   class Connection < ActionCable::Connection::Base
@@ -5,7 +7,7 @@ module ApplicationCable
 
     def connect
       self.current_user = find_verified_user
-      logger.add_tags 'ActionCable', current_user.email  # Optional: for debugging
+      logger.add_tags 'ActionCable', current_user.email # Optional: for debugging
     end
 
     private
@@ -19,10 +21,10 @@ module ApplicationCable
           # Decode the JWT token using Devise JWT's secret key
           decoded_token = JWT.decode(token, ENV.fetch('JWT_SECRET', nil))[0]
 
-          user_id = decoded_token['sub']  # 'sub' holds the user ID in Devise JWT
+          user_id = decoded_token['sub'] # 'sub' holds the user ID in Devise JWT
           # Find the user based on the decoded user ID
           User.find_by(id: user_id) || reject_unauthorized_connection
-        rescue JWT::DecodeError => e
+        rescue JWT::DecodeError
           reject_unauthorized_connection
         end
       else

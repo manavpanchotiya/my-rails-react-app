@@ -1,18 +1,8 @@
-// CategoriesPage.tsx
-import { NavLink as Link } from 'react-router-dom';
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
-import Categories from "./categories"; // Adjust the path as needed
+import Resource from "./resource";
 
-export default function CategoriesPage() {
+export default function ResourcePage() {
   return (
-      <Categories />
+      <Resource />
 
   );
 }

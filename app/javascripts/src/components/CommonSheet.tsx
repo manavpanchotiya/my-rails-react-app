@@ -5,10 +5,7 @@ import {
   SheetContent,
   SheetDescription,
   SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-  SheetFooter,
-  SheetClose
+  SheetTitle
 } from "@/components/ui/sheet";
 
 interface CommonSheetProps {

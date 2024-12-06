@@ -1,6 +1,6 @@
 // Categories.tsx
 import { useEffect, useState, useMemo } from 'react';
-import { fetch } from '@/apis/usersApi';
+import { fetch, bulkDelete } from '@/apis/usersApi';
 import { DataTable } from "@/components/data-table/data-table"
 import { createColumns } from "@/components/data-table/column-def"
 import { ResourceSheet } from "./resource-sheet"
@@ -36,8 +36,9 @@ export default function Users() {
     try {
       const response = await fetch();
       setResources(response.data);
-    } catch (error) {
-      setError('Error fetching users');
+    } catch (err) {
+      const error = err?.response?.data?.error || 'An error occurred';
+      setError(`Error fetching users ${error}`);
     } finally {
       setLoading(false);
     }
@@ -57,6 +58,7 @@ export default function Users() {
     if (selectedRows.length > 0) {
       try {
         const response = await bulkDelete({ ids: selectedRows.map(resource => resource.id) });
+
         await fetchResources();
         const { notice } = response.data;
         toast.success(notice);
@@ -73,7 +75,7 @@ export default function Users() {
     }
   };
 
-  const handleSaveResource = (newResource: User) => {
+  const handleSaveResource = () => {
     fetchResources();
     setIsEditing(false);
   };

@@ -14,14 +14,11 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
 import { Camera } from "lucide-react"; // Ensure you have the correct import for your icon
 import { toast } from "sonner";
 
 // Define the props for the reusable component
 interface ImageUploaderProps {
-  labelText?: string;
-  submitButtonText?: string;
   acceptedFormats?: { [key: string]: any };
   maxSize?: number; // in bytes
   data?: any; // in bytes
@@ -29,8 +26,6 @@ interface ImageUploaderProps {
 }
 
 export const ImageUploader: React.FC<ImageUploaderProps> = ({
-  labelText = "Upload your image", // default value
-  submitButtonText = "Submit", // default value
   acceptedFormats = { "image/png": [], "image/jpg": [], "image/jpeg": [] }, // default accepted formats
   maxSize = 1000000, // default size limit
   api,
@@ -58,6 +53,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
         setPreview(URL.createObjectURL(acceptedFiles[0]));
         await uploadImage(acceptedFiles[0]); // Call your API function here
       } catch (error) {
+        console.warn(error)
         setPreview(null);
         form.resetField("image");
       }
@@ -65,7 +61,7 @@ export const ImageUploader: React.FC<ImageUploaderProps> = ({
     [form],
   );
 
-  const { getRootProps, getInputProps, isDragActive, fileRejections } =
+  const { getRootProps, getInputProps, fileRejections } =
     useDropzone({
       onDrop,
       maxFiles: 1,

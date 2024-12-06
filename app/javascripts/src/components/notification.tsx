@@ -12,15 +12,11 @@ import {
   DropdownMenuGroup,
 } from "@/components/ui/dropdown-menu";
 import { Bell } from "lucide-react";
-import { Check } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { formatDistanceToNow, parseISO } from "date-fns";
 
 import useNotificationsChannel from '@/hooks/use-notification-channel';
 import { fetch, allRead } from '@/apis/notificationsApi';
-type NotificationProps = {
-  hasUnread?: boolean;
-};
 
 export function Notification() {
    const [notifications, setNotifications] = useState<Notification[]>([]);
@@ -49,6 +45,7 @@ export function Notification() {
       setNotifications(response.data.notifications);
       setHasUnread(response.data.has_unread);
     } catch (error) {
+      console.warn(error)
       setError('Error fetching categories');
     } finally {
       setLoading(false);
@@ -57,7 +54,7 @@ export function Notification() {
 
   const markAllAsRead = async () => {
     try {
-      const response = await allRead();
+      await allRead();
       // Update the notifications state to reflect that they are read
       setNotifications((prev) => prev.map(notification => ({ ...notification, read: true })));
     } catch (error) {
@@ -93,7 +90,7 @@ export function Notification() {
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
         <ScrollArea className="h-72 rounded-md border">
-          {notifications.map((notification, index) => (
+          {!loading && notifications.map((notification, index) => (
             <DropdownMenuItem  key={index} className={`${!notification.read ? 'bg-gray-100' : ''}`}>
               <div
                 key={index}

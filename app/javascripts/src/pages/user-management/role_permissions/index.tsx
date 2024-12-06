@@ -15,7 +15,7 @@ import { Loader } from "@/components/common/loader"
 const RolesList = () => {
   const [roles, setRoles] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRoleId, setSelectedRoleId] = useState(null);
+  //const [selectedRoleId, setSelectedRoleId] = useState(null);
 
   useEffect(() => {
     const loadRoles = async () => {
@@ -23,6 +23,7 @@ const RolesList = () => {
         const { data } = await fetch();
         setRoles(data);
       } catch (error) {
+        console.warn(error)
         toast.error('Failed to load roles');
       } finally {
         setLoading(false);
@@ -57,7 +58,7 @@ const RolesList = () => {
             <h2 className="text-lg font-bold mb-4">{role.role_name}</h2>
             <Dialog>
               <DialogTrigger asChild>
-                    <Button onClick={() => setSelectedRoleId(role.id)}>
+                    <Button>
                       Manage Permissions
                     </Button>
               </DialogTrigger>

@@ -13,7 +13,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+import { ChevronDown } from "lucide-react"
 import { ConfirmationDialog } from '@/components/confirmation-dialog'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -39,7 +39,16 @@ type DataTableProps<TData> = {
   columns: ColumnDef<TData>[]
   filterColumns: { name: string, type: "text" | "dropdown", options?: string[] }[] // filter config
   filterPlaceholder?: string
-  onRowSelectionChange?: (selectedRows: TData[]) => void
+  onRowSelectionChange?: (selectedRows: TData[]) => void,
+  disabled?: boolean;
+  modelName?: string;
+  selectedRows?: (selectedRows: TData[]) => void,
+  onNewItem?: void;
+  setRowSelection?: void;
+  rowSelection?: void;
+  isDialogOpen?: boolean;
+  setDialogOpen?: void;
+  onDelete?: void;
 }
 
 export function DataTable<TData>({

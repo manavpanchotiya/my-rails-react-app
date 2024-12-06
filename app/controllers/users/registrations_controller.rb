@@ -4,6 +4,7 @@ module Users
   class RegistrationsController < Devise::RegistrationsController
     protect_from_forgery unless: -> { request.format.json? }
     respond_to :json
+    before_action :load_data, only: :bulk_destroy
 
     # This method will handle user email updates
     def update
@@ -100,7 +101,20 @@ module Users
       }, status: :created
     end
 
+    def bulk_destroy
+      records_size = @users.size
+      if @users.destroy_all
+        render json: { notice: I18n.t('successfully_deleted', count: records_size, entity: records_size > 1 ? 'Users' : 'User') }
+      else
+        render_error(I18n.t(:something_went_wrong))
+      end
+    end
+
     private
+
+    def load_data
+      @users = User.where(id: params[:ids])
+    end
 
     def respond_with(resource, _opts = {})
       if resource.persisted?

@@ -9,11 +9,10 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins '*'
-
+    origins ENV.fetch('APP_URL', nil)
     if ->(env) { env['HTTP_GALAXY_HEADER'] == 'arish' }
       resource '*',
-               headers: %w(Authorization),
+               headers: %w[Authorization],
                methods: :any,
                expose: ['Authorization']
     end
