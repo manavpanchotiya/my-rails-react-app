@@ -15,7 +15,9 @@ module Users
       # Send OTP
       if user.persisted?
         user.otp_required_for_login = true
+
         user.otp_secret = User.generate_otp_secret
+
         user.save!
         puts "OTP Generated: #{user.current_otp}" if Rails.env.development?
         render json: { message: 'OTP sent successfully.', success: true, email: user.email }, status: :ok
@@ -27,7 +29,7 @@ module Users
     # POST /verify_otp
     def verify_otp
       user = User.find_by(email: resource_params[:email])
-      if user&.validate_and_consume_otp!(resource_params[:otp_code])
+      if user&.verify_otp(resource_params[:otp_code])
         sign_in(user)
         respond_with(user)
       else

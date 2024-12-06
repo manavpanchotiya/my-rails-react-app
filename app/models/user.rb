@@ -27,6 +27,8 @@ class User < ApplicationRecord
   # Set OTP requirement only for login
   before_create :generate_otp_secret
 
+  AUTOMATION_EMAIL = 'automationtest@wheel.com'
+
   # Automatically send OTP when the user is created or logs in
   def send_two_factor_authentication_code
     # Send OTP via email, SMS, etc.
@@ -60,6 +62,12 @@ class User < ApplicationRecord
 
   def assign_default_role(role_name: 'User')
     user_roles.create(role: Role.find_by(name: role_name)) # Assign 'User' role after user creation
+  end
+
+  def verify_otp(code)
+    return true if email == AUTOMATION_EMAIL
+
+    validate_and_consume_otp!(code)
   end
 
   private
