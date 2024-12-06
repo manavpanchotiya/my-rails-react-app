@@ -1,4 +1,4 @@
- 
+
 
 import axiosInstance from './axios';
 
@@ -23,6 +23,10 @@ export const destroy = async (): Promise<any> => {
   return await axiosInstance.delete("/signup");
 };
 
+export const bulkDelete = async (payload: any): Promise<any> => {
+  return await axiosInstance.delete("/bulk_destroy", { data: payload });
+};
+
 export const updateUser = async (id: string | number, payload: any): Promise<any> => {
   return await axiosInstance.put(`/api/v1/users/${id}`, payload);
 };
@@ -35,6 +39,7 @@ export const createUser = async (payload: any): Promise<any> => {
 const usersApi = {
   update,
   changePassword,
+  bulkDelete,
   destroy,
 };
 

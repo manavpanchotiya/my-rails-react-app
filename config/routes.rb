@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   devise_scope :user do
     post 'verify_otp', to: 'users/sessions#verify_otp'
     post 'change_password', to: 'users/registrations#change_password'
+    delete 'bulk_destroy', to: 'users/registrations#bulk_destroy'
   end
   namespace :api do
     namespace :v1 do

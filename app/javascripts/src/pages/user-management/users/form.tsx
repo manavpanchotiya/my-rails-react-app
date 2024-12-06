@@ -86,7 +86,6 @@ export function ResourceForm({ resource, onSave, ...props }: ResourceProps) {
           role_ids: selectedRoleIds, // Sending the array of role_ids directly
         },
       };
-
       if (resource) {
         const response = await update(resource.id, userPayload);
         const { notice } = response.data;
