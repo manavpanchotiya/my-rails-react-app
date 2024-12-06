@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import {
   userLogin,
+  socialLogin,
   userLogout,
   destroyUser,
   verifyOTP
@@ -76,6 +77,22 @@ const authSlice = createSlice({
         state.loading = false;
         state.isLoggedIn = false;
         state.error = payload || "Login failed";
+      })
+      //SocialLogin
+      .addCase(socialLogin.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(socialLogin.fulfilled, (state, { payload }: PayloadAction<{ data: UserInfo; userToken: string }>) => {
+        state.loading = false;
+        state.userInfo = payload.data;
+        state.email = payload.data.email;
+        state.userToken = payload.userToken;
+        state.isLoggedIn = true;
+      })
+      .addCase(socialLogin.rejected, (state, { payload }: PayloadAction<string | null>) => {
+        state.loading = false;
+        state.error = payload || "Something went wrong!";
       })
       // Verify OTP
       .addCase(verifyOTP.pending, (state) => {

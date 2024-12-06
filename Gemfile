@@ -25,6 +25,10 @@ gem 'devise-two-factor'
 gem 'dotenv', groups: %i[development test]
 gem 'image_processing'
 gem 'pundit'
+gem 'omniauth'
+gem 'omniauth-google-oauth2'
+gem 'omniauth-github'
+gem 'omniauth-linkedin-oauth2'
 # Use Redis adapter to run Action Cable in production
 # gem "redis", ">= 4.0.1"
 

@@ -5,6 +5,7 @@ class User < ApplicationRecord
   devise :two_factor_authenticatable
   devise :registerable, :two_factor_authenticatable,
          :jwt_authenticatable,
+         :omniauthable, omniauth_providers: [:google_oauth2, :github, :linkedin],
          jwt_revocation_strategy: self,
          otp_secret_encryption_key: ENV.fetch('OTP_SECRET_KEY', nil)
 

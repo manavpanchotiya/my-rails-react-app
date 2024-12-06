@@ -309,6 +309,14 @@ Devise.setup do |config|
   # Note: These might become the new default in future versions of Devise.
   config.responder.error_status = :unprocessable_entity
   config.responder.redirect_status = :see_other
+  config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET'], {
+    scope: 'email,profile',
+    prompt: 'select_account',
+  }
+
+  config.omniauth :github, ENV['GITHUB_CLIENT_ID'], ENV['GITHUB_CLIENT_SECRET'], scope: "user:email"
+
+  config.omniauth :linkedin, ENV['LINKEDIN_CLIENT_ID'], ENV['LINKEDIN_CLIENT_SECRET'], scope: 'r_liteprofile r_emailaddress'
 
   # ==> Configuration for :registerable
 
@@ -322,7 +330,10 @@ Devise.setup do |config|
     jwt.request_formats = {
       user: [:json]
     }
-    jwt.dispatch_requests = [['POST', %r{^/verify_otp$}]]
+    jwt.dispatch_requests = [
+      ['POST', %r{^/verify_otp$}],
+      ['POST', %r{^/api/v1/auth/google$}]
+    ]
     jwt.revocation_requests = [['DELETE', %r{^/logout$}]]
     jwt.expiration_time = 6.hours.to_i
   end

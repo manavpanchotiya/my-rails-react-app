@@ -34,6 +34,8 @@ class AddDeviseToUsers < ActiveRecord::Migration[7.0]
 
       # Uncomment below if timestamps were not included in your original model.
       # t.timestamps null: false
+      t.string :uid
+      t.string :provider
     end
 
     add_index :users, :email,                unique: true

@@ -11,7 +11,8 @@ constraints lambda { |req| req.headers['X-Galaxy-Header'] == 'arish' } do
                      controllers: {
                        sessions: 'users/sessions',
                        registrations: 'users/registrations',
-                       passwords: 'users/passwords'
+                       passwords: 'users/passwords',
+                       omniauth_callbacks: 'users/omniauth_callbacks'
                      }
 
   devise_scope :user do
@@ -21,6 +22,7 @@ constraints lambda { |req| req.headers['X-Galaxy-Header'] == 'arish' } do
   end
   namespace :api do
     namespace :v1 do
+      post 'auth/:provider', to: 'social_auth#authenticate'
       resources :users, only: %i[index create update] do
         get :fetch, on: :collection
       end
