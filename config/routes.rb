@@ -11,8 +11,7 @@ constraints lambda { |req| req.headers['X-Galaxy-Header'] == 'arish' } do
                      controllers: {
                        sessions: 'users/sessions',
                        registrations: 'users/registrations',
-                       passwords: 'users/passwords',
-                       omniauth_callbacks: 'users/omniauth_callbacks'
+                       passwords: 'users/passwords'
                      }
 
   devise_scope :user do

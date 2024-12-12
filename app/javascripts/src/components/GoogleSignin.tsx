@@ -6,14 +6,14 @@ import axiosInstance from "@/apis/axios";
 import { socialLogin } from "@/features/auth/authActions";
 import { useNavigate } from "react-router-dom";
 
-const SocialLogin = () => {
+const GoogleSignin = () => {
   const [provider, setProvider] = useState<string | null>(null);
   const [profile, setProfile] = useState<any>(null);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onSocialLogin = useCallback(async (credentialResponse: any) => {
+  const OnGoogleSignin = useCallback(async (credentialResponse: any) => {
     try {
       const token = credentialResponse.credential;
 
@@ -38,7 +38,7 @@ const SocialLogin = () => {
     <div className="social-login-container">
       <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID || ""}>
         <GoogleLogin
-          onSuccess={onSocialLogin}
+          onSuccess={OnGoogleSignin}
           onError={() => {
             console.error("Google Login Failed");
           }}
@@ -48,4 +48,4 @@ const SocialLogin = () => {
   );
 };
 
-export default SocialLogin;
+export default GoogleSignin;
