@@ -6,6 +6,8 @@ import { z } from "zod";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import GoogleSignin from '@/components/GoogleSignin'
+import GitHubCallback from '@/components/GitHubCallback'
 
 // Component and utility imports
 import { cn } from "@/lib/utils";
@@ -283,13 +285,14 @@ export function UserAuthForm({ className, ...props }: React.HTMLAttributes<HTMLD
                   </div>
                 </div>
               </Form>
-              <Button variant="outline" type="button" disabled={isLoading}>
+              <>
                 {isLoading ? (
                   <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
                 ) : (
-                  <Icons.gitHub className="mr-2 h-4 w-4" />
-                )} GitHub
-              </Button>
+                  <GoogleSignin/>
+                )}
+              </>
+
             </div>
           </>
         )}

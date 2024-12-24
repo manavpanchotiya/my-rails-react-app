@@ -11,6 +11,11 @@ interface LoginPayload {
   otp_code?: string;
 }
 
+interface SocialLoginPayload {
+  provider: string;
+  token?: string;
+}
+
 // Define the response type for the login and register actions
 interface AuthResponse {
   data: any; // Adjust based on your API response structure
@@ -54,6 +59,39 @@ export const userLogin = createAsyncThunk<AuthResponse, LoginPayload>(
 
       return {
         data: response.data,
+      };
+    } catch (error: any) {
+      return handleError(error, rejectWithValue);
+    }
+  }
+);
+
+
+// Login action
+export const socialLogin = createAsyncThunk<AuthResponse, SocialLoginPayload>(
+  "auth/social_login",
+  async ({provider, token}, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: getHeaders(),
+      };
+
+      const response = await axios.post(
+        `${backendURL}api/v1/auth/google`,
+        { provider: provider, token: token },
+        config
+      );
+
+
+      const authToken = response.headers["authorization"];
+      if (authToken) {
+        localStorage.setItem("userToken", authToken);
+      }
+
+      return {
+        data: response.data.data,
+        userToken: authToken,
+        isLoggedIn: response.data.isLoggedIn,
       };
     } catch (error: any) {
       return handleError(error, rejectWithValue);
