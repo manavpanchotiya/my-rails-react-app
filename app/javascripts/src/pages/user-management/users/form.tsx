@@ -13,7 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Icons } from "@/components/icons";
+import { Icons } from "@/components/Icons";
 import {
   SheetClose,
   SheetFooter,

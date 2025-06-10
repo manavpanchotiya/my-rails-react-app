@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { Loader } from "@/components/common/loader"
+import { Loader } from "@/components/common/Loader"
 
 const RolesList = () => {
   const [roles, setRoles] = useState([]);

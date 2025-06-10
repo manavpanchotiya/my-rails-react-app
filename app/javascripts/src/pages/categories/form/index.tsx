@@ -20,7 +20,7 @@ import {
 
 import { resourceFormSchema, ResourceFormValues } from "../resourceFormSchema";
 import { update, create } from "@/apis/categoriesApi";
-import { Icons } from "@/components/icons";
+import { Icons } from "@/components/Icons";
 
 interface ResourceProps {
   resource?: Resource;

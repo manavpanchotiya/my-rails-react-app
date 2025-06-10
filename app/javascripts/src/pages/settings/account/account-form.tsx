@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Icons } from "@/components/icons";
+import { Icons } from "@/components/Icons";
 import {
   Form,
   FormControl,

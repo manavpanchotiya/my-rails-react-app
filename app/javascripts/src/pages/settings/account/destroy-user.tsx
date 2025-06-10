@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Icons } from "@/components/icons";
+import { Icons } from "@/components/Icons";
 import { destroy } from '@/apis/usersApi';
 import { toast } from "sonner";
 import { useDispatch } from 'react-redux'

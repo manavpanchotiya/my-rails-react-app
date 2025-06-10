@@ -4,7 +4,7 @@ import { DataTable } from "@/components/data-table/data-table"
 import { createColumns } from "@/components/data-table/column-def"
 import { ResourceSheet } from "./resource-sheet"
 import { toast } from "sonner";
-import { Loader } from "@/components/common/loader"
+import { Loader } from "@/components/common/Loader"
 import { useNavigate } from "react-router-dom";
 // Define the Resource type
 type Resource = {

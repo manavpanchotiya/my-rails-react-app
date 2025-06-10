@@ -24,7 +24,7 @@ import {
 
 import {ImageUploader} from "@/components/image-uploader"
 
-import { Icons } from "@/components/icons";
+import { Icons } from "@/components/Icons";
 import { fetch, create, upload } from '@/apis/profilesApi';
 
 export function ProfileForm() {

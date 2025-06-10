@@ -20,7 +20,7 @@ import {
 
 import { resourceFormSchema, ResourceFormValues } from './formSchema'; // Import form schema
 import { update, create } from '@/apis/rolesApi';
-import { Icons } from "@/components/icons";
+import { Icons } from "@/components/Icons";
 
 interface ResourceProps {
   resource?: Resource; // category is optional now

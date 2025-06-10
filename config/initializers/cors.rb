@@ -9,7 +9,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins ENV.fetch('APP_URL', nil)
+    origins ENV.fetch('APP_URL', 'http://localhost:3000')
     if ->(env) { env['HTTP_GALAXY_HEADER'] == 'arish' }
       resource '*',
                headers: %w[Authorization],
