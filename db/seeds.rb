@@ -5,10 +5,12 @@
   Role.create(name:)
 end
 
-user = User.create!(email: 'superadmin@wheel.com', password: 'password',
-                    password_confirmation: 'password')
+# Temporarily skip user creation
+# user = User.create!(email: 'superadmin@wheel.com', password: 'password',
+#                     password_confirmation: 'password')
 
-user.assign_default_role(role_name: 'SuperAdmin')
+# Comment out because user is not defined
+# user.assign_default_role(role_name: 'SuperAdmin')
 
 MODEL_NAME = %w[
   User
@@ -17,6 +19,7 @@ MODEL_NAME = %w[
   RolePermission
   UserRole
 ].freeze
+
 # Iterate through each model and create permissions for view and edit actions
 MODEL_NAME.each do |name|
   Role.all.each do |role|

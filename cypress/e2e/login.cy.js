@@ -1,5 +1,7 @@
-describe("OTP Submission", () => {
-  it("should fill and submit the OTP", () => {
+"use strict";
+
+describe("OTP Submission", function () {
+  it("should fill and submit the OTP", function () {
     // Visit the page
     cy.visit("/signin");
 
